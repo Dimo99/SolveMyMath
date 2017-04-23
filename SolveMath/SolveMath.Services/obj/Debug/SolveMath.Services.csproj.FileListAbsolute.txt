@@ -1,0 +1,5 @@
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\bin\Debug\SolveMath.Services.dll
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\bin\Debug\SolveMath.Services.pdb
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\obj\Debug\SolveMath.Services.csprojResolveAssemblyReference.cache
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\obj\Debug\SolveMath.Services.dll
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\obj\Debug\SolveMath.Services.pdb

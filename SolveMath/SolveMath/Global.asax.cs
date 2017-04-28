@@ -1,14 +1,16 @@
-﻿using System.Web.Http;
+﻿using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using AutoMapper;
+using SolveMath.Models.BindingModels;
 using SolveMath.Models.Entities;
 using SolveMath.Models.ViewModels;
 
 namespace SolveMath
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
@@ -22,7 +24,14 @@ namespace SolveMath
 
         private void ConfigureAutoMapper()
         {
-            Mapper.Initialize(expression=>expression.CreateMap<RegisterViewModel,ApplicationUser>());
+            Mapper.Initialize(expression =>
+            {
+                expression.CreateMap<Topic, TopicHeaderViewModel>()
+                    .ForMember(vm => vm.Score, configurationExpression =>
+                        configurationExpression.MapFrom(topic => topic.UpVotes - topic.DownVotes));
+                expression.CreateMap<RegisterBindingModel, ApplicationUser>();
+                expression.CreateMap<Category, CategoriesViewModel>();
+            });
         }
     }
 }

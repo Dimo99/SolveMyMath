@@ -1,7 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using SolveMath;
 
-[assembly: OwinStartupAttribute(typeof(SolveMath.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 namespace SolveMath
 {
     public partial class Startup

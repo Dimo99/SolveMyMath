@@ -1,5 +1,5 @@
-﻿@model SolveMath.Models.ExternalLoginListViewModel
-@using Microsoft.Owin.Security
+﻿@using Microsoft.Owin.Security
+@model  SolveMath.Models.ViewModels.ExternalLoginListViewModel
 
 <h4>Use another service to log in.</h4>
 <hr />
@@ -14,7 +14,7 @@
         </div>
     }
     else {
-        using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl })) {
+        using (Html.BeginForm("ExternalLogin", "Account", new {Model.ReturnUrl })) {
             @Html.AntiForgeryToken()
             <div id="socialLoginList">
                 <p>

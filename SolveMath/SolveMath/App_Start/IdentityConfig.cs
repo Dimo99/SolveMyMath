@@ -7,7 +7,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using SolveMath.Data;
-using SolveMath.Models;
 using SolveMath.Models.Entities;
 
 namespace SolveMath
@@ -40,7 +39,7 @@ namespace SolveMath
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<SolveMathContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(new SolveMathContext()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
@@ -51,11 +50,7 @@ namespace SolveMath
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequiredLength = 6
             };
 
             // Configure user lockout defaults

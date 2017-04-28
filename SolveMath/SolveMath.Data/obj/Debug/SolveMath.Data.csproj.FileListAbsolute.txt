@@ -28,3 +28,6 @@ C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\bin\Debug\System.Web.WebPages.Deployment.xml
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.pdb
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.justmigrating.resources
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.csproj.GenerateResource.Cache
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.AddingSubCategories.resources

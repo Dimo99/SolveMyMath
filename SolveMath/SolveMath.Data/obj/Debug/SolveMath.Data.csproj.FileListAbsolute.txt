@@ -31,3 +31,6 @@ C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.justmigrating.resources
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.csproj.GenerateResource.Cache
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.AddingSubCategories.resources
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.improvingCategory.resources
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.fix.resources
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.fixing.resources

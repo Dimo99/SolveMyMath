@@ -1,14 +1,16 @@
 ﻿@model IEnumerable<SolveMath.Models.ViewModels.TopicHeaderViewModel>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Форум";
 }
 
-<h2>Index</h2>
-<div class="row">
-    @Html.Action("Categories");
+<h2>Форум математика</h2>
+@Html.ActionLink("Нова тема", "Post", null, new { @class = "btn btn-primary" })
+<div class="container">
+    <div class="col-lg-3">
+        @Html.Action("Categories")
+    </div>
+    <div class="col-lg-offset-2 col-lg-5">
+        @Html.Partial("_Topics", Model)
+
+    </div>
 </div>
-@foreach (var topic in Model)
-{
-    <a>@topic.Title</a>
-}
-

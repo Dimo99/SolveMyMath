@@ -1,0 +1,56 @@
+﻿@model SolveMath.Models.ViewModels.TopicViewModel
+
+<div class="container">
+    <div class="col-lg-3">
+        @Html.Action("Categories")
+    </div>
+    <div class="col-lg-offset-2">
+        <article class="card card-block">
+            <p>@Model.Author.UserName</p>
+            <h2>@Model.Title</h2>
+            <p>@Model.Content</p>
+            <div>
+                <label>Тагове:</label>
+                @foreach (var tag in Model.Tags)
+                {
+                    <span>@tag.Name</span>
+                }
+            </div>
+            <br />
+            <div>
+                <span>@Model.Score</span>
+                <span>@Model.PublishDate.ToLongDateString()</span>
+                <span><a href="/forum/forum/category/@Model.Category.Id">@Model.Category.Name</a></span>
+            </div>
+            <br />
+            @Html.ActionLink("Отговори", "AddAnswer", new { Model.Id }, new { @class = "btn btn-primary" })
+        </article>
+            @foreach (var reply in Model.Replies)
+            {
+                <article class="card card-block">
+                    <p>@reply.Author.UserName</p>
+                    <p>@reply.Content</p>
+                    <div>
+                        <span>@reply.UpVotes-@reply.DownVotes</span>
+                        <span>@reply.PublishDate.Value.ToLongDateString()</span>
+                    </div>
+                    @Html.ActionLink("Коментирай", "AddComment", new { id = reply.Id, topicId = Model.Id }, new { @class = "btn btn-warning" })
+                </article>
+                <article class="col-lg-offset-2 card card-block">
+                    @if (reply.ForumComments.Any())
+                    {
+                        foreach (var comment in reply.ForumComments)
+                        {
+                            <p>@comment.Author.UserName</p>
+                            <p>@comment.Content</p>
+                            <div>
+                                <span>@comment.UpVotes-@comment.DownVotes</span>
+                                <span>@comment.PublishDate.Value.ToString("dd/M/yyyy-hh:mm:ss")</span>
+                            </div>
+                            @Html.ActionLink("Коментирай", "AddComment", new { id = reply.Id, topicId = Model.Id }, new { @class = "btn btn-warning" })
+                        }
+                    }
+                </article>
+            }
+    </div>
+</div>

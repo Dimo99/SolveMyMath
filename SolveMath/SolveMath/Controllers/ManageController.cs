@@ -1,11 +1,19 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using SolveMath.Models.BindingModels;
 using SolveMath.Models.ViewModels;
+using SolveMath.Services;
+using SolveMath.Services.Contracts;
+using static SolveMath.Helpers.Constants;
 
 namespace SolveMath.Controllers
 {
@@ -14,9 +22,10 @@ namespace SolveMath.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+        private IManageService service;
         public ManageController()
         {
+            service = new ManageService();
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -63,13 +72,20 @@ namespace SolveMath.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            IEnumerable<ManageIndexTopicViewModel> userTopics = service.UserTopics(userId);
+            IEnumerable<ManageIndexReplyViewModel> userReplies = service.UserReplies(userId);
+            IEnumerable<ManageIndexForumCommentViewModel> userForumComments = service.UserForumComments(userId);
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                UserTopics = userTopics,
+                ForumComments = userForumComments,
+                Replies = userReplies
+
             };
             return View(model);
         }
@@ -320,7 +336,133 @@ namespace SolveMath.Controllers
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public ActionResult DeleteTopic(int id)
+        {
+            if (!service.ValidateIsUserTopic(id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserDeleteTopic);
+            }
+            return this.View();
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult DeleteTopic()
+        {
+            //if (!service.ValidateIsUserTopic(id, UserId))
+            //{
+            //    throw new InvalidOperationException(InvalidUserDeleteTopic);
+            //}
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public ActionResult DeleteForumComment(int id)
+        {
+            if (!service.IsUserForumComment(id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserDeleteForumComment);
+            }
+            return this.View();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteForumComment()
+        {
+            //if (!service.IsUserForumComment(id, UserId))
+            //{
+            //    throw new InvalidOperationException(InvalidUserDeleteForumComment);
+            //}
+            throw new NotImplementedException();
+        }
+
+        public ActionResult DeleteReply(int id)
+        {
+            if (!service.IsUserReply(id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(IvalidUserDeleteReply);
+            }
+            return this.View();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteReply()
+        {
+            //if (!service.IsUserReply(id, UserId))
+            //{
+            //    throw new InvalidOperationException(IvalidUserDeleteReply);
+            //}
+            throw new NotImplementedException();
+        }
+        [Authorize(Roles = "User")]
+        public ActionResult EditTopic(int id)
+        {
+            if (!service.ValidateIsUserTopic(id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserEditTopic);
+            }
+            TopicEditViewModel tevm = service.Topic(id);
+            return this.View(tevm);
+        }
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        public ActionResult EditTopic(EditTopicBindingModel etbm)
+        {
+            if (!service.ValidateIsUserTopic(etbm.Id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserEditTopic);
+            }
+            service.EditTopic(etbm);
+            return RedirectToAction("Topic", "Forum", new {area = "Forum",etbm.Id});
+        }
+        [Authorize(Roles = "User")]
+        [HttpGet]
+        public ActionResult EditForumComment(int id)
+        {
+            if (!service.IsUserForumComment(id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserEditForumComment);
+            }
+            ForumCommentEditViewModel forumComment = service.ForumComment(id);
+            return this.View(forumComment);
+        }
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        public ActionResult EditForumComment(EditForumCommentBindingModel editForumCommentBinding)
+        {
+            if (!service.IsUserForumComment(editForumCommentBinding.Id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserEditForumComment);
+            }
+            service.EditForumComment(editForumCommentBinding);
+            return this.RedirectToAction("Topic", "Forum", new {area = "Forum", id = service.TopicIdFromForumComment(editForumCommentBinding.Id)});
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet]
+        public ActionResult EditReply(int id)
+        {
+            if (!service.IsUserReply(id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserEditReply);
+            }
+            ReplyEditViewModel replyEditViewModel = service.Reply(id);
+            return this.View(replyEditViewModel);
+        }
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        public ActionResult EditReply(EditReplyBindingModel editReplyBindingModel)
+        {
+            if (!service.IsUserReply(editReplyBindingModel.Id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserEditReply);
+            }
+            service.EditReply(editReplyBindingModel);
+            return this.RedirectToAction("Topic", "Forum", new {area="Forum", id = service.TopicIdFromReply(editReplyBindingModel.Id)});
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)

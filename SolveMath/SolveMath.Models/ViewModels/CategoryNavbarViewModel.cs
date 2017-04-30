@@ -2,11 +2,10 @@
 
 namespace SolveMath.Models.ViewModels
 {
-    public class CategoriesViewModel
+    public class CategoryNavbarViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<CategoriesViewModel> Categories { get; set; }
-        public bool IsUsed { get; set; }
+        public IEnumerable<CategoryNavbarViewModel> SubCategories { get; set; }
     }
 }

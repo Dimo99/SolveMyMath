@@ -1,0 +1,16 @@
+﻿@using SolveMath.Models.ViewModels
+@model AddingAnswerViewModel
+@{
+    ViewBag.Title = "Добави отговор";
+}
+
+<h2>Добави отговор</h2>
+
+<form method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="form-group">
+        <label class="control-label" for="form-group-input">Отговор</label>
+        <input type="text" class="form-control" id="form-group-input" name="Content" placeholder="Отговор...">
+    </div>
+    <input type="submit" value="Отговори" class="btn btn-success">
+</form>

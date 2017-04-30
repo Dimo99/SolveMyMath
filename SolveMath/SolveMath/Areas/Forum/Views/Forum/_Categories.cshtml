@@ -1,22 +1,24 @@
-﻿@model IEnumerable<SolveMath.Models.Entities.Category>
-<ul class="col-md-12 col-sm-4" style="display: block;">
-    @foreach (var model in Model)
-    {
+﻿@model IEnumerable<SolveMath.Models.ViewModels.CategoryNavbarViewModel>
+@helper ShowCategoryTree(IEnumerable<SolveMath.Models.ViewModels.CategoryNavbarViewModel> categories,HashSet<string> names)
+{
+    <ul>
+        @foreach (var category in categories)
+        {
+            if (!names.Contains(category.Name))
+            {
+                names.Add(category.Name);
+                <li>
+                    @Html.ActionLink(category.Name, "Category")
+                    @if (category.SubCategories.Any())
+                    {
+                        @ShowCategoryTree(category.SubCategories,names)
+                    }
 
-        if (model.Categories.Count != 0)
-        {
-            <li class="dropdown dropdown-menu">
-                @Html.ActionLink(model.Name, "Category", new { id = model.Id })
-                @foreach (var subCategory in model.Categories)
-                {
-                    @Html.ActionLink(model.Name, "Category", new { id = model.Id })
-                }
-            </li>
+                </li>
+            }
         }
-        else
-        {
-            
-            <li>@Html.ActionLink(model.Name, "Category", new { id = model.Id })</li>
-        }
-    }
+    </ul>
+}
+<ul class="col-md-12 col-sm-4" style="display: block;">
+    @ShowCategoryTree(Model,new HashSet<string>())
 </ul>

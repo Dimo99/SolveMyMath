@@ -1,0 +1,33 @@
+﻿@using System.Globalization
+@model IEnumerable<SolveMath.Models.ViewModels.TopicHeaderViewModel>
+@foreach (var model in Model)
+{
+    int id = model.Id;
+    string title = model.Title;
+    string username = model.AuthorUsername;
+    string date = model.PublishDate.ToString("dd/M/yyyy",CultureInfo.InvariantCulture);
+    string categoryName = model.CategoryName;
+    int score = model.Score;
+    int numberOfReplies = model.NumberOfAnswers;
+    <article>
+        <div>
+            <a href="/forum/forum/topic/@id">
+                <h2>@title</h2>
+            </a>
+            <p>
+                <span>@username</span>
+                <span>@date</span>
+                <span>@categoryName</span>
+            </p>
+        </div>
+        <div>
+            <div>
+                
+            </div>
+            <div>
+                <span>@score</span>
+                <span>@numberOfReplies</span>
+            </div>
+        </div>
+    </article>
+}

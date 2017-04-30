@@ -94,17 +94,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BindingModels\RegisterBindingModel.cs" />
+    <Compile Include="BindingModels\AddForumCommentBindingModel.cs" />
+    <Compile Include="BindingModels\AnswerBindingModel.cs" />
+    <Compile Include="BindingModels\EditForumCommentBindingModel.cs" />
+    <Compile Include="BindingModels\EditReplyBindingModel.cs" />
+    <Compile Include="BindingModels\EditTopicBindingModel.cs" />
+    <Compile Include="BindingModels\TopicBindingModel.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\ForumComment.cs" />
     <Compile Include="Entities\Post.cs" />
     <Compile Include="Entities\Reply.cs" />
     <Compile Include="Entities\Tag.cs" />
     <Compile Include="Entities\Topic.cs" />
+    <Compile Include="ViewModels\AddCommentViewModel.cs" />
+    <Compile Include="ViewModels\AddingAnswerViewModel.cs" />
     <Compile Include="ViewModels\AddPhoneNumberViewModel.cs" />
-    <Compile Include="ViewModels\CategoriesViewModel.cs" />
+    <Compile Include="ViewModels\CategoryNamesViewModel.cs" />
+    <Compile Include="ViewModels\CategoryNavbarViewModel.cs" />
+    <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModels\ForumCommentEditViewModel.cs" />
     <Compile Include="ViewModels\ConfigureTwoFactorViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginListViewModel.cs" />
@@ -114,18 +125,24 @@
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ManageIndexReplyViewModel.cs" />
+    <Compile Include="ViewModels\ManageIndexTopicViewModel.cs" />
     <Compile Include="ViewModels\ManageLoginsViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\ReplyEditViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\SendCodeViewModel.cs" />
     <Compile Include="ViewModels\SetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\TopicEditViewModel.cs" />
     <Compile Include="ViewModels\TopicHeaderViewModel.cs" />
+    <Compile Include="ViewModels\TopicViewModel.cs" />
     <Compile Include="ViewModels\VerifyCodeViewModel.cs" />
     <Compile Include="ViewModels\VerifyPhoneNumberViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <Compile Include="ViewModels\ManageIndexForumCommentViewModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

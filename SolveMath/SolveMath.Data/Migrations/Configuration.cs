@@ -1,6 +1,5 @@
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using SolveMath.Models.Entities;
@@ -50,7 +49,7 @@ namespace SolveMath.Data.Migrations
                 };
                 context.Categories.Add(category);
                 var parent = context.Categories.First(x => x.Name == "Геометрия");
-                parent.Categories.Add(category);
+                parent.SubCategories.Add(category);
                 context.SaveChanges();
             }
             if (!context.Categories.Any(x => x.Name == "Планиметрия"))
@@ -61,7 +60,7 @@ namespace SolveMath.Data.Migrations
                 };
                 context.Categories.Add(category);
                 var parent = context.Categories.First(x => x.Name == "Геометрия");
-                parent.Categories.Add(category);
+                parent.SubCategories.Add(category);
                 context.SaveChanges();
             }
             if (!context.Categories.Any(x => x.Name == "Алгебра"))
@@ -77,7 +76,7 @@ namespace SolveMath.Data.Migrations
                 };
                 context.Categories.Add(category);
                 var parent = context.Categories.First(x => x.Name == "Алгебра");
-                parent.Categories.Add(category);
+                parent.SubCategories.Add(category);
                 context.SaveChanges();
             }
             if (!context.Categories.Any(x => x.Name == "Алгебра - 2кл."))
@@ -88,7 +87,7 @@ namespace SolveMath.Data.Migrations
                 };
                 context.Categories.Add(category);
                 var parent = context.Categories.First(x => x.Name == "Алгебра");
-                parent.Categories.Add(category);
+                parent.SubCategories.Add(category);
                 context.SaveChanges();
             }
         }

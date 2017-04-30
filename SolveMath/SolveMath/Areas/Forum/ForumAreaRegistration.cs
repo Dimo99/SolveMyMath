@@ -14,6 +14,7 @@ namespace SolveMath.Areas.Forum
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
+            
             context.MapRoute(
                 "Forum_default",
                 "Forum/{controller}/{action}/{id}",

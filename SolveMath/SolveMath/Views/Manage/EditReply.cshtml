@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Редактиране";
+}
+
+<h2>Редактиране</h2>
+<form method="post">
+    <input type="hidden" value="@Model.Id" name="id" />
+    <div class="form-group">
+        <label class="control-label" for="form-group-input">Съдържание</label>
+        <textarea type="text" class="form-control" id="form-group-input" name="Content" >@Model.Content</textarea>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Изпрати" />
+</form>
+

@@ -10,5 +10,6 @@ namespace SolveMath.Models.ViewModels
         public DateTime PublishDate { get; set; }
         public string AuthorUsername { get; set; }
         public string CategoryName { get; set; }
+        public int Id { get; set; }
     }
 }

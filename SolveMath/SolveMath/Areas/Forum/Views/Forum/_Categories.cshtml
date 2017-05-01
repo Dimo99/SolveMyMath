@@ -8,7 +8,7 @@
             {
                 names.Add(category.Name);
                 <li>
-                    @Html.ActionLink(category.Name, "Category")
+                    @Html.ActionLink(category.Name, "Category",new {id = category.Id})
                     @if (category.SubCategories.Any())
                     {
                         @ShowCategoryTree(category.SubCategories,names)

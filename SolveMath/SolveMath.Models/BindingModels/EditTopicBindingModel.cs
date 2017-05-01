@@ -10,5 +10,9 @@ namespace SolveMath.Models.BindingModels
     {
         public int Id { get; set; }
         public string Content { get; set; }
+        public string Title { get; set; }
+        public string CategoryName { get; set; }
+        public string TagNames { get; set; }
+        public string[] OldTagNames { get; set; }
     }
 }

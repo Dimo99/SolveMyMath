@@ -40,9 +40,9 @@ namespace SolveMath.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -344,18 +344,20 @@ namespace SolveMath.Controllers
             {
                 throw new InvalidOperationException(InvalidUserDeleteTopic);
             }
-            return this.View();
+            DeleteTopicViewModel deleteTopicViewModel = service.DeleteTopicViewModel(id);
+            return this.View(deleteTopicViewModel);
         }
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public ActionResult DeleteTopic()
+        public ActionResult DeleteTopic(DeleteTopicBindingModel deleteTopicBindingModel)
         {
-            //if (!service.ValidateIsUserTopic(id, UserId))
-            //{
-            //    throw new InvalidOperationException(InvalidUserDeleteTopic);
-            //}
-            throw new NotImplementedException();
+            if (!service.ValidateIsUserTopic(deleteTopicBindingModel.Id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserDeleteTopic);
+            }
+            service.DeleteTopic(deleteTopicBindingModel);
+            return this.RedirectToAction("Index", "Forum", new { area = "Forum" });
         }
 
         [HttpGet]
@@ -366,17 +368,20 @@ namespace SolveMath.Controllers
             {
                 throw new InvalidOperationException(InvalidUserDeleteForumComment);
             }
-            return this.View();
+            DeleteForumCommentViewModel model = service.DeleteForumCommentViewModel(id);
+            return this.View(model);
         }
 
         [HttpPost]
-        public ActionResult DeleteForumComment()
+        public ActionResult DeleteForumComment(DeleteForumCommentBindingModel deleteForumCommentBindingModel)
         {
-            //if (!service.IsUserForumComment(id, UserId))
-            //{
-            //    throw new InvalidOperationException(InvalidUserDeleteForumComment);
-            //}
-            throw new NotImplementedException();
+            if (!service.IsUserForumComment(deleteForumCommentBindingModel.Id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(InvalidUserDeleteForumComment);
+            }
+            service.DeleteForumComment(deleteForumCommentBindingModel);
+            return this.RedirectToAction("Index", "Forum", new { area = "Forum" });
+
         }
 
         public ActionResult DeleteReply(int id)
@@ -385,17 +390,19 @@ namespace SolveMath.Controllers
             {
                 throw new InvalidOperationException(IvalidUserDeleteReply);
             }
-            return this.View();
+            DeleteReplyViewModel model = service.DeleteReplyViewModel(id);
+            return this.View(model);
         }
 
         [HttpPost]
-        public ActionResult DeleteReply()
+        public ActionResult DeleteReply(DeleteReplyBindingModel bindingModel)
         {
-            //if (!service.IsUserReply(id, UserId))
-            //{
-            //    throw new InvalidOperationException(IvalidUserDeleteReply);
-            //}
-            throw new NotImplementedException();
+            if (!service.IsUserReply(bindingModel.Id, User.Identity.GetUserId()))
+            {
+                throw new InvalidOperationException(IvalidUserDeleteReply);
+            }
+            service.DeleteReply(bindingModel);
+            return this.RedirectToAction("Index", "Forum", new { area = "Forum" });
         }
         [Authorize(Roles = "User")]
         public ActionResult EditTopic(int id)
@@ -416,7 +423,7 @@ namespace SolveMath.Controllers
                 throw new InvalidOperationException(InvalidUserEditTopic);
             }
             service.EditTopic(etbm);
-            return RedirectToAction("Topic", "Forum", new {area = "Forum",etbm.Id});
+            return RedirectToAction("Topic", "Forum", new { area = "Forum", etbm.Id });
         }
         [Authorize(Roles = "User")]
         [HttpGet]
@@ -438,7 +445,7 @@ namespace SolveMath.Controllers
                 throw new InvalidOperationException(InvalidUserEditForumComment);
             }
             service.EditForumComment(editForumCommentBinding);
-            return this.RedirectToAction("Topic", "Forum", new {area = "Forum", id = service.TopicIdFromForumComment(editForumCommentBinding.Id)});
+            return this.RedirectToAction("Topic", "Forum", new { area = "Forum", id = service.TopicIdFromForumComment(editForumCommentBinding.Id) });
         }
 
         [Authorize(Roles = "User")]
@@ -461,7 +468,7 @@ namespace SolveMath.Controllers
                 throw new InvalidOperationException(InvalidUserEditReply);
             }
             service.EditReply(editReplyBindingModel);
-            return this.RedirectToAction("Topic", "Forum", new {area="Forum", id = service.TopicIdFromReply(editReplyBindingModel.Id)});
+            return this.RedirectToAction("Topic", "Forum", new { area = "Forum", id = service.TopicIdFromReply(editReplyBindingModel.Id) });
         }
         protected override void Dispose(bool disposing)
         {
@@ -474,7 +481,7 @@ namespace SolveMath.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -525,6 +532,6 @@ namespace SolveMath.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

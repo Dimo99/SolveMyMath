@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using SolveMath.Models.BindingModels;
 using SolveMath.Models.ViewModels;
 using SolveMath.Services;
 using SolveMath.Services.Contracts;
-
+using PagedList;
+using PagedList.Mvc;
 namespace SolveMath.Areas.Forum.Controllers
 {
     public class ForumController : Controller
@@ -49,12 +51,13 @@ namespace SolveMath.Areas.Forum.Controllers
             service.CreateAnswer(abm,userId);
             return this.RedirectToAction("Topic",new {abm.Id});
         }
-
+        [Authorize(Roles = "User")]
         public ActionResult AddComment(int id,int topicId)
         {
             AddCommentViewModel acvm = new AddCommentViewModel() {Id = id,TopicId = topicId};
             return View(acvm);
         }
+        [Authorize(Roles = "User")]
         [HttpPost]
         public ActionResult AddComment(AddForumCommentBindingModel acbm)
         {
@@ -70,18 +73,19 @@ namespace SolveMath.Areas.Forum.Controllers
         // GET: Forum/Forum
         public ActionResult Index(int? page)
         {
-            var pageTopics = service.GetTopicsForPage(page);
-            return View(pageTopics);
-        }
-        public ActionResult Category(string name)
-        {
-            return this.View();
+            ForumIndexViewModel forumIndexViewModel = new ForumIndexViewModel() {Page = page};
+            return this.View(forumIndexViewModel);
         }
 
-        public ActionResult Category()
+        public ActionResult Topics(int? page,int? categoryId)
         {
-            CategoryViewModel categoryViewModel = service.GetCategoryViewModel();
-            return this.View();
+            var pageTopics = service.GetTopics(categoryId);
+            return this.PartialView("_Topics", pageTopics.ToPagedList(page ?? 1, 10));
+        }
+        public ActionResult Category(int id,int? page)
+        {
+            CategoryViewModel categoryViewModel = service.GetCategoryViewModel(id);
+            return this.View(categoryViewModel);
         }
         public ActionResult Categories()
         {

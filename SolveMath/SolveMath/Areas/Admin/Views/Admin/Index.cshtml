@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "Админ";
+}
+
+<h2>Здравейте @User.Identity.Name</h2>
+@Html.ActionLink("Добави категория","NewCategory",null,new {@class = "btn btn-primary"})
+<h2>Редактирай</h2>
+@Html.Action("Categories")
+
+

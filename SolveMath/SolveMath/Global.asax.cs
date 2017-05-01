@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using AutoMapper;
+using SolveMath.Models.BindingModels;
 using SolveMath.Models.Entities;
 using SolveMath.Models.ViewModels;
 
@@ -30,7 +31,6 @@ namespace SolveMath
                         configurationExpression.MapFrom(topic => (topic.UpVotes - topic.DownVotes)));
                 expression.CreateMap<Category, CategoryNamesViewModel>();
                 expression.CreateMap<Category, CategoryNavbarViewModel>();
-                expression.CreateMap<Topic, TopicEditViewModel>();
                 expression.CreateMap<Reply, ReplyEditViewModel>();
                 expression.CreateMap<ForumComment, ForumCommentEditViewModel>();
                 expression.CreateMap<Topic, ManageIndexTopicViewModel>();
@@ -38,6 +38,13 @@ namespace SolveMath
                 expression.CreateMap<Reply, ManageIndexReplyViewModel>();
                 expression.CreateMap<ForumComment, ManageIndexForumCommentViewModel>().ForMember(vm => vm.Topic,
                     configurationExpression => configurationExpression.MapFrom(forumcomment => forumcomment.Topic));
+                expression.CreateMap<Category, CategoryViewModel>();
+                expression.CreateMap<CategoryBindingModel, Category>();
+                expression.CreateMap<EditCategoryBindingModel, Category>();
+                expression.CreateMap<Category, EditCategoryViewModel>();
+                expression.CreateMap<Topic, DeleteTopicViewModel>();
+                expression.CreateMap<ForumComment, DeleteForumCommentViewModel>();
+                expression.CreateMap<Reply, DeleteReplyViewModel>();
             });
         }
     }

@@ -81,6 +81,14 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -229,6 +237,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap_old.css" />
     <Content Include="Content\bootstrap_old.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -253,6 +262,12 @@
     <Content Include="Areas\Forum\Views\Forum\Topic.cshtml" />
     <Content Include="Areas\Forum\Views\Forum\AddAnswer.cshtml" />
     <Content Include="Areas\Forum\Views\Forum\AddComment.cshtml" />
+    <Content Include="Areas\Forum\Views\Forum\Category.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\_Categories.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\EditCategory.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\DeleteCategory.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\AddSubCategory.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -303,6 +318,9 @@
     <Content Include="Views\Manage\EditForumComment.cshtml" />
     <Content Include="Views\Manage\EditTopic.cshtml" />
     <Content Include="Views\Manage\EditReply.cshtml" />
+    <Content Include="Views\Manage\DeleteTopic.cshtml" />
+    <Content Include="Views\Manage\DeleteForumComment.cshtml" />
+    <Content Include="Views\Manage\DeleteReply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

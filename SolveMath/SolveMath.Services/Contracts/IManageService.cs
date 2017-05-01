@@ -20,5 +20,11 @@ namespace SolveMath.Services.Contracts
         IEnumerable<ManageIndexTopicViewModel> UserTopics(string userId);
         IEnumerable<ManageIndexReplyViewModel> UserReplies(string userId);
         IEnumerable<ManageIndexForumCommentViewModel> UserForumComments(string userId);
+        DeleteTopicViewModel DeleteTopicViewModel(int id);
+        void DeleteTopic(DeleteTopicBindingModel deleteTopicBindingModel);
+        DeleteForumCommentViewModel DeleteForumCommentViewModel(int id);
+        void DeleteForumComment(DeleteForumCommentBindingModel deleteForumCommentBindingModel);
+        DeleteReplyViewModel DeleteReplyViewModel(int id);
+        void DeleteReply(DeleteReplyBindingModel bindingModel);
     }
 }

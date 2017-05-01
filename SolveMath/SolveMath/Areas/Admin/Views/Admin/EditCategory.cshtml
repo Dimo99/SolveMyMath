@@ -1,0 +1,15 @@
+﻿@model SolveMath.Models.ViewModels.EditCategoryViewModel
+@{
+    ViewBag.Title = "Редактиране";
+}
+
+<h2>Редактиране</h2>
+<form method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <div class="form-group">
+        <label class="control-label" for="form-group-input">Име:</label>
+        <input type="text" class="form-control" id="form-group-input" name="Name" value="@Model.Name">
+    </div>
+    <input type="submit" value="Редактирай" class="btn btn-primary" />
+    @Html.ActionLink("Създай под категория","AddSubCategory",new {id = Model.Id},new {@class = "btn btn-success"})
+</form>

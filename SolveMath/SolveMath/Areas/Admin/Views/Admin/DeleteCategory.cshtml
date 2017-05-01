@@ -1,0 +1,15 @@
+﻿@using SolveMath.Models.ViewModels
+@model EditCategoryViewModel
+@{
+    ViewBag.Title = "Изтриване на категория";
+}
+
+<h2>Сигурни ли сте, искате да изтриите категорията</h2>
+<form method="post">
+    <input type="hidden" value="@Model.Id" />
+    <div class="form-group">
+        <label class="control-label" for="form-group-input">Име:</label>
+        <input type="text" class="form-control" id="form-group-input" disabled="disabled" value="@Model.Name">
+    </div>
+    <input type="submit" class="btn btn-danger" value="Изтриване" />
+</form>

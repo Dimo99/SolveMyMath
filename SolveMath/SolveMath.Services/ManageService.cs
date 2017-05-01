@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using AutoMapper;
 using SolveMath.Models.BindingModels;
+using SolveMath.Models.Entities;
 using SolveMath.Models.ViewModels;
 using SolveMath.Services.Contracts;
 
@@ -18,13 +20,67 @@ namespace SolveMath.Services
 
         public TopicEditViewModel Topic(int id)
         {
-            return Mapper.Map<TopicEditViewModel>(this.Context.Topics.Find(id));
+            var topic = Context.Topics.Find(id);
+            var categoryNames = Context.Categories.Select(c => c.Name);
+            TopicEditViewModel topicEditViewModel = new TopicEditViewModel()
+            {
+                Id = topic.Id,
+                CategoryName = topic.Category.Name,
+                CategoryNames = categoryNames,
+                Content = topic.Content,
+                TagNames = topic.Tags.Select(t=>t.Name),
+                Title = topic.Title
+            };
+            return topicEditViewModel;
         }
 
         public void EditTopic(EditTopicBindingModel etbm)
         {
+
             var topic = Context.Topics.Find(etbm.Id);
             topic.Content = etbm.Content;
+            topic.Title  = etbm.Title;
+            if (topic.Category.Name == etbm.CategoryName)
+            {
+                var category = Context.Categories.First(c => c.Name == etbm.CategoryName);
+                topic.Category = category;
+            }
+            List<Tag> tagsToDelete = new List<Tag>();
+            if (etbm.OldTagNames == null)
+            {
+                etbm.OldTagNames = new string[] {};
+            }
+            foreach (var topicTag in topic.Tags)
+            {
+                if (!etbm.OldTagNames.Contains(topicTag.Name))
+                {
+                    tagsToDelete.Add(topicTag);
+                }                
+            }
+            foreach (var tag in tagsToDelete)
+            {
+                topic.Tags.Remove(tag);
+            }
+            if (etbm.TagNames != null)
+            {
+                string[] tagNames = etbm.TagNames.Split(new string[] {",", " ,"}, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var tagName in tagNames)
+                {
+                    var tag = Context.Tags.FirstOrDefault(t => t.Name == tagName);
+                    if (tag == null)
+                    {
+                        topic.Tags.Add(new Tag()
+                        {
+                            Name = tagName
+                        });
+                    }
+                    else
+                    {
+                        topic.Tags.Add(tag);
+                    }
+                }
+            }
+            
             Context.SaveChanges();
         }
 
@@ -89,6 +145,53 @@ namespace SolveMath.Services
             return
                 Mapper.Map<IEnumerable<ManageIndexForumCommentViewModel>>(
                     Context.ForumComments.Where(fc => fc.Author.Id == userId));
+        }
+
+        public DeleteTopicViewModel DeleteTopicViewModel(int id)
+        {
+            return Mapper.Map<DeleteTopicViewModel>(Context.Topics.Find(id));
+        }
+
+        public void DeleteTopic(DeleteTopicBindingModel deleteTopicBindingModel)
+        {
+            var topic = Context.Topics.Find(deleteTopicBindingModel.Id);
+            var replies = topic.Replies.ToList();
+            for (var i = 0; i < replies.Count; i++)
+            {
+                topic.Replies.Remove(replies[i]);
+                this.DeleteReply(new DeleteReplyBindingModel() {Id = replies[i].Id});
+            }
+            Context.Topics.Remove(topic);
+            Context.SaveChanges();
+        }
+
+        public DeleteForumCommentViewModel DeleteForumCommentViewModel(int id)
+        {
+            return Mapper.Map<DeleteForumCommentViewModel>(Context.ForumComments.Find(id));
+        }
+
+        public void DeleteForumComment(DeleteForumCommentBindingModel deleteForumCommentBindingModel)
+        {
+            var forumComment = Context.ForumComments.Find(deleteForumCommentBindingModel.Id);
+            Context.ForumComments.Remove(forumComment);
+            Context.SaveChanges();
+        }
+
+        public DeleteReplyViewModel DeleteReplyViewModel(int id)
+        {
+            return Mapper.Map<DeleteReplyViewModel>(Context.Replies.Find(id));
+        }
+
+        public void DeleteReply(DeleteReplyBindingModel bindingModel)
+        {
+            var deleteReply = Context.Replies.Find(bindingModel.Id);
+            var forumComments = deleteReply.ForumComments.ToList();
+            for (var i = 0; i < forumComments.Count; i++)
+            {
+                deleteReply.ForumComments.Remove(forumComments[i]);
+            }
+            Context.Replies.Remove(deleteReply);
+            Context.SaveChanges();
         }
     }
 }

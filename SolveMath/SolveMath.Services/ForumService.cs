@@ -9,18 +9,34 @@ using SolveMath.Services.Contracts;
 
 namespace SolveMath.Services
 {
-    public class ForumService : Service,IForumService
+    public class ForumService : Service, IForumService
     {
         private const int TopicsPerPage = 10;
-        public IEnumerable<TopicHeaderViewModel> GetTopicsForPage(int? page)
+        public IEnumerable<TopicHeaderViewModel> GetTopics(int? categoryId)
         {
-            if (page == null||page <= 1)
+            List<Topic> topics = new List<Topic>();
+            if (categoryId == null)
             {
-                page = 0;
+                topics = Context.Topics.ToList();
             }
-            int pageNotNull = (int)page;
-            IEnumerable<Topic> topics = Context.Topics;
-            topics = topics.Skip(pageNotNull * TopicsPerPage).Take(TopicsPerPage);
+            else
+            {
+                var currentCategory = Context.Categories.Find(categoryId);
+                Queue<Category> categories = new Queue<Category>();
+                categories.Enqueue(currentCategory);
+                while (categories.Count!=0)
+                {
+                    var category = categories.Dequeue();
+                    foreach (var categorySubCategory in category.SubCategories)
+                    {
+                        categories.Enqueue(categorySubCategory);
+                    }
+                    foreach (var categoryTopic in category.Topics)
+                    {
+                        topics.Add(categoryTopic);
+                    }
+                }
+            }
             return Mapper.Map<IEnumerable<Topic>, IEnumerable<TopicHeaderViewModel>>(topics);
         }
 
@@ -46,17 +62,17 @@ namespace SolveMath.Services
             Context.Topics.Add(topic);
             ApplicationUser user = Context.Users.Find(tbm.AuthorId);
             Category category = Context.Categories.First(c => c.Name == tbm.CategoryName);
-            string[] tagsNames = tbm.TagsNames.Split(new string[] {",", " ,"}, StringSplitOptions.None);
+            string[] tagsNames = tbm.TagsNames.Split(new string[] { ",", " ," }, StringSplitOptions.None);
             List<Tag> tags = new List<Tag>();
             foreach (var tagName in tagsNames)
             {
                 if (Context.Tags.Any(x => x.Name == tagName))
                 {
-                    tags.Add(Context.Tags.First(x=>x.Name==tagName));
+                    tags.Add(Context.Tags.First(x => x.Name == tagName));
                 }
                 else
                 {
-                    Tag tag = new Tag() {Name = tagName,Topics = new List<Topic>() {topic} };
+                    Tag tag = new Tag() { Name = tagName, Topics = new List<Topic>() { topic } };
                     Context.Tags.Add(tag);
                     tags.Add(tag);
                 }
@@ -85,7 +101,7 @@ namespace SolveMath.Services
             return topicViewModel;
         }
 
-        public void CreateAnswer(AnswerBindingModel abm,string userId)
+        public void CreateAnswer(AnswerBindingModel abm, string userId)
         {
             Reply reply = new Reply()
             {
@@ -114,6 +130,11 @@ namespace SolveMath.Services
             };
             Context.ForumComments.Add(comment);
             Context.SaveChanges();
+        }
+
+        public CategoryViewModel GetCategoryViewModel(int id)
+        {
+            return Mapper.Map<CategoryViewModel>(Context.Categories.Find(id));
         }
     }
 }

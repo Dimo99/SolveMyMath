@@ -1,0 +1,15 @@
+﻿@model SolveMath.Models.ViewModels.DeleteReplyViewModel
+@{
+    ViewBag.Title = "Изтрий отговора";
+}
+
+<h2>Изтрий отговора</h2>
+<form method="post">
+    <input type="hidden" value="@Model.Id" name="id" class="form-control" />
+    <div class="form-group">
+        <label class="control-label" for="form-group-input">Съдържание</label>
+        <input type="text" class="form-control" id="form-group-input" value="@Model.Content" disabled="disabled"/>
+    </div>
+    <input type="submit" value="Изтрий" class="btn btn-danger" />
+</form>
+

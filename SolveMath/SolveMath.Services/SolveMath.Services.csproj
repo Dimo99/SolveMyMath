@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminService.cs" />
+    <Compile Include="Contracts\IAdminService.cs" />
     <Compile Include="Contracts\IForumService.cs" />
     <Compile Include="ForumService.cs" />
     <Compile Include="ManageService.cs" />

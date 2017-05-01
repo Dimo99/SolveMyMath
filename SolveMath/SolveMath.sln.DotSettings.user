@@ -3,4 +3,5 @@
   &lt;Assembly Path="C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorlib.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>

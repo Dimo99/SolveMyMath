@@ -1,0 +1,14 @@
+﻿@model SolveMath.Models.ViewModels.DeleteTopicViewModel
+@{
+    ViewBag.Title = "Изтриване на тема";
+}
+
+<h2>Сигурни ли сте, че искате да изтриете следната тема</h2>
+<form method="post">
+    <input type="hidden" value="@Model.Id" name="id" class="form-control"/>
+    <div class="form-group">
+        <label class="control-label" for="form-group-input">Заглавие</label>
+        <input type="text" class="form-control" id="form-group-input" value="@Model.Title" disabled="disabled">
+    </div>
+    <input type="submit" value="Изтрий" class="btn btn-danger" />
+</form>

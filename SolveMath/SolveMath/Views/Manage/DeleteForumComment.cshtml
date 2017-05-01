@@ -1,0 +1,15 @@
+﻿@model SolveMath.Models.ViewModels.DeleteForumCommentViewModel
+@{
+    ViewBag.Title = "Изтриване на коментар";
+}
+
+<h2>Изтриване на коментар</h2>
+<form method="post">
+    <div class="form-group">
+        <input type="hidden" value="@Model.Id" name="id" />
+        <label class="control-label" for="form-group-input">Съдържание:</label>
+        <input type="text" class="form-control" id="form-group-input" value="@Model.Content" disabled="disabled"/>
+    </div>
+    <input type="submit" value="Изтрий" class="btn btn-danger" />
+</form>
+

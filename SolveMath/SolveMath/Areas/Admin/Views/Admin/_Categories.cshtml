@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SolveMath.Models.ViewModels.CategoryNavbarViewModel>
+@helper ShowCategoryTree(IEnumerable<SolveMath.Models.ViewModels.CategoryNavbarViewModel> categories, HashSet<string> names)
+{
+    <ul>
+        @foreach (var category in categories)
+        {
+            if (!names.Contains(category.Name))
+            {
+                names.Add(category.Name);
+                <li>
+                    @Html.ActionLink(category.Name, "EditCategory", new { id = category.Id })
+                    @Html.ActionLink("Delete","DeleteCategory",new {id=category.Id},new {@class = "btn btn-danger"})
+                    @if (category.SubCategories.Any())
+                    {
+                        @ShowCategoryTree(category.SubCategories, names)
+                    }
+
+                </li>
+            }
+        }
+    </ul>
+}
+<ul class="col-md-12 col-sm-4" style="display: block;">
+    @ShowCategoryTree(Model, new HashSet<string>())
+</ul>

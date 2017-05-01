@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SolveMath.Models.ViewModels.TopicHeaderViewModel>
+﻿@model  SolveMath.Models.ViewModels.ForumIndexViewModel
 @{
     ViewBag.Title = "Форум";
 }
@@ -10,7 +10,7 @@
         @Html.Action("Categories")
     </div>
     <div class="col-lg-offset-2 col-lg-5">
-        @Html.Partial("_Topics", Model)
+        @Html.Action("Topics", Model.Page)
 
     </div>
 </div>

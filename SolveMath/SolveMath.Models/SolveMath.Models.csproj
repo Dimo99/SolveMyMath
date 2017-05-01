@@ -59,6 +59,14 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -96,9 +104,16 @@
   <ItemGroup>
     <Compile Include="BindingModels\AddForumCommentBindingModel.cs" />
     <Compile Include="BindingModels\AnswerBindingModel.cs" />
+    <Compile Include="BindingModels\CategoryBindingModel.cs" />
+    <Compile Include="BindingModels\DeleteCategoryBindingModel.cs" />
+    <Compile Include="BindingModels\DeleteForumCommentBindingModel.cs" />
+    <Compile Include="BindingModels\DeleteReplyBindingModel.cs" />
+    <Compile Include="BindingModels\DeleteTopicBindingModel.cs" />
+    <Compile Include="BindingModels\EditCategoryBindingModel.cs" />
     <Compile Include="BindingModels\EditForumCommentBindingModel.cs" />
     <Compile Include="BindingModels\EditReplyBindingModel.cs" />
     <Compile Include="BindingModels\EditTopicBindingModel.cs" />
+    <Compile Include="BindingModels\SubCategoryBindingModel.cs" />
     <Compile Include="BindingModels\TopicBindingModel.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\Category.cs" />
@@ -110,11 +125,15 @@
     <Compile Include="Entities\Topic.cs" />
     <Compile Include="ViewModels\AddCommentViewModel.cs" />
     <Compile Include="ViewModels\AddingAnswerViewModel.cs" />
+    <Compile Include="ViewModels\AddingSubCategoryViewModel.cs" />
     <Compile Include="ViewModels\AddPhoneNumberViewModel.cs" />
     <Compile Include="ViewModels\CategoryNamesViewModel.cs" />
     <Compile Include="ViewModels\CategoryNavbarViewModel.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModels\DeleteForumCommentViewModel.cs" />
+    <Compile Include="ViewModels\DeleteReplyViewModel.cs" />
+    <Compile Include="ViewModels\DeleteTopicViewModel.cs" />
     <Compile Include="ViewModels\ForumCommentEditViewModel.cs" />
     <Compile Include="ViewModels\ConfigureTwoFactorViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginConfirmationViewModel.cs" />
@@ -122,17 +141,20 @@
     <Compile Include="ViewModels\FactorViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\ForgotViewModel.cs" />
+    <Compile Include="ViewModels\ForumIndexViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ManageIndexReplyViewModel.cs" />
     <Compile Include="ViewModels\ManageIndexTopicViewModel.cs" />
     <Compile Include="ViewModels\ManageLoginsViewModel.cs" />
+    <Compile Include="ViewModels\EditCategoryViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\ReplyEditViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\SendCodeViewModel.cs" />
     <Compile Include="ViewModels\SetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\SubCategoryViewModel.cs" />
     <Compile Include="ViewModels\TopicEditViewModel.cs" />
     <Compile Include="ViewModels\TopicHeaderViewModel.cs" />
     <Compile Include="ViewModels\TopicViewModel.cs" />
@@ -144,7 +166,9 @@
     <None Include="packages.config" />
     <Compile Include="ViewModels\ManageIndexForumCommentViewModel.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\PagedList.css" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

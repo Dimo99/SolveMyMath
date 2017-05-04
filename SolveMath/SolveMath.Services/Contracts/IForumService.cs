@@ -14,5 +14,11 @@ namespace SolveMath.Services.Contracts
         void CreateAnswer(AnswerBindingModel abm,string userId);
         void CreateComment(AddForumCommentBindingModel abm, string userId);
         CategoryViewModel GetCategoryViewModel(int id);
+        void UpVoteTopic(VoteBindingModel model,string userId);
+        void DownVoteTopic(VoteBindingModel model,string userId);
+        void UpVoteForumComment(VoteBindingModel model,string userId);
+        void DownVoteForumComment(VoteBindingModel model,string userId);
+        void UpVoteReply(VoteBindingModel model,string userId);
+        void DownVoteReply(VoteBindingModel model,string userId);
     }
 }

@@ -32,3 +32,5 @@ C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Servi
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\bin\Debug\System.Web.WebPages.Razor.xml
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\bin\Debug\System.Web.WebPages.xml
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\bin\Debug\System.Web.WebPages.Deployment.xml
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\bin\Debug\SolveMath.Services.dll.CodeAnalysisLog.xml
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Services\bin\Debug\SolveMath.Services.dll.lastcodeanalysissucceeded

@@ -136,5 +136,141 @@ namespace SolveMath.Services
         {
             return Mapper.Map<CategoryViewModel>(Context.Categories.Find(id));
         }
+
+        public void UpVoteTopic(VoteBindingModel model,string userId)
+        {
+            var user = Context.Users.Find(userId);
+            var topic = Context.Topics.Find(model.Id);
+            if (topic.UpVotedUsers.Contains(user))
+            {
+                topic.UpVotes--;
+                topic.UpVotedUsers.Remove(user);
+            }
+            else
+            {
+                if (topic.DownVotedUsers.Contains(user))
+                {
+                    topic.DownVotedUsers.Remove(user);
+                    topic.DownVotes--;
+                }
+                topic.UpVotedUsers.Add(user);
+                topic.UpVotes++;
+            }
+            Context.SaveChanges();
+        }
+
+        public void DownVoteTopic(VoteBindingModel model,string userId)
+        {
+            var user = Context.Users.Find(userId);
+            var topic = Context.Topics.Find(model.Id);
+            if (topic.DownVotedUsers.Contains(user))
+            {
+                topic.DownVotedUsers.Remove(user);
+                topic.DownVotes--;
+            }
+            else
+            {
+                if (topic.UpVotedUsers.Contains(user))
+                {
+                    topic.UpVotedUsers.Remove(user);
+                    topic.UpVotes--;
+                }
+                topic.DownVotedUsers.Add(user);
+                topic.DownVotes++;
+            }
+            Context.SaveChanges();
+        }
+
+        public void UpVoteForumComment(VoteBindingModel model,string userId)
+        {
+
+            var user = Context.Users.Find(userId);
+            var forumComment = Context.ForumComments.Find(model.Id);
+            if (forumComment.UpVotedUsers.Contains(user))
+            {
+                forumComment.UpVotedUsers.Remove(user);
+                forumComment.UpVotes--;
+            }
+            else
+            {
+                if (forumComment.DownVotedUsers.Contains(user))
+                {
+                    forumComment.DownVotedUsers.Remove(user);
+                    forumComment.DownVotes--;
+                }
+                forumComment.UpVotedUsers.Add(user);
+                forumComment.UpVotes++;
+            }
+            Context.SaveChanges();
+        }
+
+        public void DownVoteForumComment(VoteBindingModel model,string userId)
+        {
+
+            var user = Context.Users.Find(userId);
+            var forumComment = Context.ForumComments.Find(model.Id);
+            if (forumComment.DownVotedUsers.Contains(user))
+            {
+                forumComment.DownVotedUsers.Remove(user);
+                forumComment.DownVotes--;
+            }
+            else
+            {
+                if (forumComment.UpVotedUsers.Contains(user))
+                {
+                    forumComment.UpVotedUsers.Remove(user);
+                    forumComment.UpVotes--;
+                }
+                forumComment.DownVotedUsers.Add(user);
+                forumComment.DownVotes++;
+            }
+            Context.SaveChanges();
+        }
+
+        public void UpVoteReply(VoteBindingModel model,string userId)
+        {
+
+            var user = Context.Users.Find(userId);
+            var reply = Context.Replies.Find(model.Id);
+            if (reply.UpVotedUsers.Contains(user))
+            {
+                reply.UpVotedUsers.Remove(user);
+                reply.UpVotes--;
+            }
+            else
+            {
+                if (reply.DownVotedUsers.Contains(user))
+                {
+                    reply.DownVotedUsers.Remove(user);
+                    reply.DownVotes--;
+                }
+                reply.UpVotedUsers.Add(user);
+                reply.UpVotes++;
+            }
+            Context.SaveChanges();
+        }
+
+        public void DownVoteReply(VoteBindingModel model,string userId)
+        {
+
+            var user = Context.Users.Find(userId);
+            var reply = Context.Replies.Find(model.Id);
+            if (reply.DownVotedUsers.Contains(user))
+            {
+                reply.DownVotedUsers.Remove(user);
+                reply.DownVotes--;
+            }
+            else
+            {
+                if (reply.UpVotedUsers.Contains(user))
+                {
+                    reply.UpVotedUsers.Remove(user);
+                    reply.UpVotes--;
+                }
+                reply.DownVotedUsers.Add(user);
+                reply.DownVotes++;
+            }
+            Context.SaveChanges();
+        }
     }
 }

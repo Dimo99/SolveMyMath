@@ -13,6 +13,7 @@ namespace SolveMath.Models.Entities
             Topics = new HashSet<Topic>();
             Replies = new HashSet<Reply>();
             ForumComments = new HashSet<ForumComment>();
+
         }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

@@ -6,7 +6,7 @@
     int id = model.Id;
     string title = model.Title;
     string username = model.AuthorUsername;
-    string date = model.PublishDate.ToString("dd/M/yyyy",CultureInfo.InvariantCulture);
+    string date = model.PublishDate.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
     string categoryName = model.CategoryName;
     int score = model.Score;
     int numberOfReplies = model.NumberOfAnswers;
@@ -23,13 +23,39 @@
         </div>
         <div>
             <div>
-                
+
+                @using (Ajax.BeginForm("UpvoteTopic", new AjaxOptions()
+                {
+                    OnSuccess = "disable(button)",
+                    HttpMethod = "POST"
+                }))
+                {
+                    <input type="hidden" name="id" value="@id" />
+                    <button type="submit">
+                        <i class="glyphicon glyphicon-chevron-up"></i>
+                    </button>
+                }
+                @using (Ajax.BeginForm("DownvoteTopic", new AjaxOptions()
+                {
+                    HttpMethod = "POST"
+                }))
+                {
+                    <input type="hidden" name="id" value="@id" />
+                    <button type="submit">
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+                    </button>
+                }
             </div>
             <div>
                 <span>@score</span>
                 <span>@numberOfReplies</span>
             </div>
         </div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Moderator") || (User.Identity.Name == username))
+        {
+            @Html.ActionLink("Редактирай", "EditTopic", "Manage", new { area = "", id = id }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Изтрий", "DeleteTopic", "Manage", new { area = "", id = id }, new { @class = "btn btn-danger" })
+        }
     </article>
 }
 @Html.PagedListPager(Model, pageNumber => Url.Action("Index", new

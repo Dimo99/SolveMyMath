@@ -34,3 +34,6 @@ C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.improvingCategory.resources
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.fix.resources
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.fixing.resources
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\obj\Debug\SolveMath.Data.Migrations.SomethingTotalyWrong.resources
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\bin\Debug\SolveMath.Data.dll.CodeAnalysisLog.xml
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Data\bin\Debug\SolveMath.Data.dll.lastcodeanalysissucceeded

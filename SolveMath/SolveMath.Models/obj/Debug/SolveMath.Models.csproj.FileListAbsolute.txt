@@ -25,10 +25,11 @@ C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Model
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\bin\Debug\System.Web.WebPages.xml
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\bin\Debug\System.Web.WebPages.Deployment.xml
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\bin\Debug\System.Web.WebPages.Razor.xml
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\obj\Debug\SolveMath.Models.csprojResolveAssemblyReference.cache
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\obj\Debug\SolveMath.Models.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\obj\Debug\SolveMath.Models.pdb
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\bin\Debug\PagedList.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\bin\Debug\PagedList.Mvc.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\bin\Debug\PagedList.xml
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\bin\Debug\PagedList.Mvc.xml
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\bin\Debug\SolveMath.Models.dll.CodeAnalysisLog.xml
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Models\bin\Debug\SolveMath.Models.dll.lastcodeanalysissucceeded

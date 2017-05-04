@@ -92,6 +92,50 @@ namespace SolveMath.Areas.Forum.Controllers
             var categories = service.GetCategories();
             return this.PartialView("_Categories", categories);
         }
-        
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult UpVoteTopic(VoteBindingModel model)
+        {
+            service.UpVoteTopic(model,User.Identity.GetUserId());
+            return this.RedirectToAction("Index");
+        }
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult DownVoteTopic(VoteBindingModel model)
+        {
+            service.DownVoteTopic(model,User.Identity.GetUserId());
+            return this.RedirectToAction("Index");
+        }
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult UpVoteReply(VoteBindingModel model)
+        {
+            service.UpVoteReply(model,User.Identity.GetUserId());
+            return this.RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult DownVoteReply(VoteBindingModel model)
+        {
+            service.DownVoteReply(model,User.Identity.GetUserId());
+            return this.RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult UpVoteForumComment(VoteBindingModel model)
+        {
+            service.UpVoteForumComment(model,User.Identity.GetUserId());
+            return this.RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult DownVoteForumComment(VoteBindingModel model)
+        {
+            service.DownVoteForumComment(model,User.Identity.GetUserId());
+            return this.RedirectToAction("Index");
+        }
     }
 }

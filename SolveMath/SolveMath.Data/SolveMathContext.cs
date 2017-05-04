@@ -1,10 +1,11 @@
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using SolveMath.Data.Interfaces;
 using SolveMath.Models.Entities;
 
 namespace SolveMath.Data
 {
-    public class SolveMathContext : IdentityDbContext<ApplicationUser>
+    public class SolveMathContext : IdentityDbContext<ApplicationUser>,ISolveMathContext
     {
         public SolveMathContext()
             : base("SolveMath")

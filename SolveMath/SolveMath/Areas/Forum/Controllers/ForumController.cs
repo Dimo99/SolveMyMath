@@ -18,6 +18,11 @@ namespace SolveMath.Areas.Forum.Controllers
         {
             service = new ForumService();
         }
+
+        public ForumController(IForumService service)
+        {
+            this.service = service;
+        }
         [Authorize(Roles = "User")]
         public ActionResult Post()
         {
@@ -80,7 +85,8 @@ namespace SolveMath.Areas.Forum.Controllers
         public ActionResult Topics(int? page,int? categoryId)
         {
             var pageTopics = service.GetTopics(categoryId);
-            return this.PartialView("_Topics", pageTopics.ToPagedList(page ?? 1, 10));
+            var pagedList = pageTopics.ToPagedList(page ?? 1, 10);
+            return this.PartialView("_Topics", pagedList);
         }
         public ActionResult Category(int id,int? page)
         {

@@ -1,4 +1,5 @@
 ﻿using SolveMath.Data;
+using SolveMath.Data.Interfaces;
 
 namespace SolveMath.Services
 {
@@ -9,6 +10,10 @@ namespace SolveMath.Services
             Context = new SolveMathContext();
         }
 
-        protected SolveMathContext Context { get; set; }
+        protected Service(ISolveMathContext context)
+        {
+            Context = context;
+        }
+        protected ISolveMathContext Context { get; set; }
     }
 }

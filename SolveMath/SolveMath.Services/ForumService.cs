@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using SolveMath.Data.Interfaces;
 using SolveMath.Models.BindingModels;
 using SolveMath.Models.Entities;
 using SolveMath.Models.ViewModels;
@@ -11,6 +12,16 @@ namespace SolveMath.Services
 {
     public class ForumService : Service, IForumService
     {
+        public ForumService(ISolveMathContext context) :
+            base(context)
+        {
+        }
+
+        public ForumService() :
+            base()
+        {
+
+        }
         private const int TopicsPerPage = 10;
         public IEnumerable<TopicHeaderViewModel> GetTopics(int? categoryId)
         {
@@ -24,7 +35,7 @@ namespace SolveMath.Services
                 var currentCategory = Context.Categories.Find(categoryId);
                 Queue<Category> categories = new Queue<Category>();
                 categories.Enqueue(currentCategory);
-                while (categories.Count!=0)
+                while (categories.Count != 0)
                 {
                     var category = categories.Dequeue();
                     foreach (var categorySubCategory in category.SubCategories)
@@ -137,7 +148,7 @@ namespace SolveMath.Services
             return Mapper.Map<CategoryViewModel>(Context.Categories.Find(id));
         }
 
-        public void UpVoteTopic(VoteBindingModel model,string userId)
+        public void UpVoteTopic(VoteBindingModel model, string userId)
         {
             var user = Context.Users.Find(userId);
             var topic = Context.Topics.Find(model.Id);
@@ -159,7 +170,7 @@ namespace SolveMath.Services
             Context.SaveChanges();
         }
 
-        public void DownVoteTopic(VoteBindingModel model,string userId)
+        public void DownVoteTopic(VoteBindingModel model, string userId)
         {
             var user = Context.Users.Find(userId);
             var topic = Context.Topics.Find(model.Id);
@@ -181,7 +192,7 @@ namespace SolveMath.Services
             Context.SaveChanges();
         }
 
-        public void UpVoteForumComment(VoteBindingModel model,string userId)
+        public void UpVoteForumComment(VoteBindingModel model, string userId)
         {
 
             var user = Context.Users.Find(userId);
@@ -204,7 +215,7 @@ namespace SolveMath.Services
             Context.SaveChanges();
         }
 
-        public void DownVoteForumComment(VoteBindingModel model,string userId)
+        public void DownVoteForumComment(VoteBindingModel model, string userId)
         {
 
             var user = Context.Users.Find(userId);
@@ -227,7 +238,7 @@ namespace SolveMath.Services
             Context.SaveChanges();
         }
 
-        public void UpVoteReply(VoteBindingModel model,string userId)
+        public void UpVoteReply(VoteBindingModel model, string userId)
         {
 
             var user = Context.Users.Find(userId);
@@ -250,7 +261,7 @@ namespace SolveMath.Services
             Context.SaveChanges();
         }
 
-        public void DownVoteReply(VoteBindingModel model,string userId)
+        public void DownVoteReply(VoteBindingModel model, string userId)
         {
 
             var user = Context.Users.Find(userId);

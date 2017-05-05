@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using SolveMath.Data;
 using SolveMath.Data.Interfaces;
 using SolveMath.Models.BindingModels;
 using SolveMath.Models.Entities;
@@ -14,12 +15,10 @@ namespace SolveMath.Services
     {
         public AdminService() : base()
         {
-
         }
 
         public AdminService(ISolveMathContext context) : base(context)
         {
-
         }
         public void CreateCategory(CategoryBindingModel categoryBindingModel)
         {
@@ -35,6 +34,15 @@ namespace SolveMath.Services
             Context.SaveChanges();
         }
 
+        public void DeleteCategory1(DeleteCategoryBindingModel model, IManageService service)
+        {
+            using (var context = new SolveMathContext())
+            {
+                context.Database.ExecuteSqlCommand(
+                    $"Delete from dbo.CategoriesSubCategories Where CategoryId={model.Id} or SubCategoryId={model.Id}");
+                context.Database.ExecuteSqlCommand($"Delete from dbo.Categories Where ");
+            }
+        }
         public void DeleteCategory(DeleteCategoryBindingModel model,IManageService service)
         {
             var category = Context.Categories.Find(model.Id);
@@ -46,16 +54,16 @@ namespace SolveMath.Services
                     category1.SubCategories.Remove(category);
                 }
             }
-            var categoriesToDelete = category.SubCategories;
-            foreach (var categoryToDelete in categoriesToDelete)
+            var categoriesToDelete = category.SubCategories.ToList();
+            for (var i = 0; i < categoriesToDelete.Count; i++)
             {
-                var topicsToRemove = categoryToDelete.Topics.ToList();
-                for (var i = 0; i < topicsToRemove.Count; i++)
+                var topicsToRemove = categoriesToDelete[i].Topics.ToList();
+                for (var j = 0; j < topicsToRemove.Count; j++)
                 {
-                    categoryToDelete.Topics.Remove(topicsToRemove[i]);
-                    service.DeleteTopic(new DeleteTopicBindingModel() {Id = topicsToRemove[i].Id});
+                    categoriesToDelete[i].Topics.Remove(topicsToRemove[j]);
+                    service.DeleteTopic(new DeleteTopicBindingModel() { Id = topicsToRemove[j].Id });
                 }
-                Context.Categories.Remove(categoryToDelete);
+                Context.Categories.Remove(categoriesToDelete[i]);
             }
             var topics = category.Topics.ToList();
             for (var i = 0; i < topics.Count; i++)

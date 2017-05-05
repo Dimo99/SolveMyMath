@@ -15,6 +15,8 @@ namespace SolveMath.Tests.Controllers
     {
         private AdminController _adminController;
         private IAdminService _service;
+        private IForumService _forumService;
+        private IManageService _manageService;
         private ISolveMathContext _context;
         private List<Category> categories;
         [TestInitialize]
@@ -45,7 +47,7 @@ namespace SolveMath.Tests.Controllers
                 _context.Categories.Add(category);
             }
             _service = new AdminService(_context);
-            _adminController = new AdminController(_service);
+            _adminController = new AdminController(_service,_forumService,_manageService);
         }
 
         [TestMethod]

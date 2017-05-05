@@ -17,6 +17,9 @@ namespace SolveMath.Areas.Admin.Controllers
 
         public AdminController(IAdminService service,IForumService forumService,IManageService manageService)
         {
+            this.service = service;
+            this.forumService = forumService;
+            this.manageService = manageService;
         }
         // GET: Admin/Admin
         public ActionResult Index()

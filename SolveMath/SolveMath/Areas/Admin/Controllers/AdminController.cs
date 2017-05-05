@@ -13,12 +13,13 @@ namespace SolveMath.Areas.Admin.Controllers
     {
         private IForumService forumService;
         private IAdminService service;
-        
+        private IManageService manageService;
 
-        public AdminController(IAdminService service)
+        public AdminController(IAdminService service,IForumService forumService,IManageService manageService)
         {
             this.service = service;
-            this.forumService = new ForumService();
+            this.forumService = forumService;
+            this.manageService = manageService;
         }
         // GET: Admin/Admin
         public ActionResult Index()
@@ -86,7 +87,7 @@ namespace SolveMath.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                service.DeleteCategory(deleteCategoryBindingModel);
+                service.DeleteCategory(deleteCategoryBindingModel,manageService);
                 return RedirectToAction("Index");
             }
             return this.View();

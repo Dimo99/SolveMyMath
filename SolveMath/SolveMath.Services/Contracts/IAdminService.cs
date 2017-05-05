@@ -7,7 +7,7 @@ namespace SolveMath.Services.Contracts
     {
         void CreateCategory(CategoryBindingModel categoryBindingModel);
         void EditCategory(EditCategoryBindingModel editCategoryBindingModel);
-        void DeleteCategory(DeleteCategoryBindingModel model);
+        void DeleteCategory(DeleteCategoryBindingModel model,IManageService service);
         EditCategoryViewModel GetCategory(int id);
         void CreateSubCategory(SubCategoryBindingModel subCategoryBindingModel);
         SubCategoryViewModel SubCategory(int id);

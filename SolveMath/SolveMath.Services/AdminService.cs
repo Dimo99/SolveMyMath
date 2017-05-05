@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using SolveMath.Data.Interfaces;
 using SolveMath.Models.BindingModels;
@@ -33,7 +35,7 @@ namespace SolveMath.Services
             Context.SaveChanges();
         }
 
-        public void DeleteCategory(DeleteCategoryBindingModel model)
+        public void DeleteCategory(DeleteCategoryBindingModel model,IManageService service)
         {
             var category = Context.Categories.Find(model.Id);
             var categories = Context.Categories;
@@ -43,6 +45,23 @@ namespace SolveMath.Services
                 {
                     category1.SubCategories.Remove(category);
                 }
+            }
+            var categoriesToDelete = category.SubCategories;
+            foreach (var categoryToDelete in categoriesToDelete)
+            {
+                var topicsToRemove = categoryToDelete.Topics.ToList();
+                for (var i = 0; i < topicsToRemove.Count; i++)
+                {
+                    categoryToDelete.Topics.Remove(topicsToRemove[i]);
+                    service.DeleteTopic(new DeleteTopicBindingModel() {Id = topicsToRemove[i].Id});
+                }
+                Context.Categories.Remove(categoryToDelete);
+            }
+            var topics = category.Topics.ToList();
+            for (var i = 0; i < topics.Count; i++)
+            {
+                category.Topics.Remove(topics[i]);
+                service.DeleteTopic(new DeleteTopicBindingModel() { Id = topics[i].Id });
             }
             Context.Categories.Remove(category);
             Context.SaveChanges();

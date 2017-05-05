@@ -52,7 +52,7 @@ namespace SolveMath.Services
             var topic = Context.Topics.Find(etbm.Id);
             topic.Content = etbm.Content;
             topic.Title = etbm.Title;
-            if (topic.Category.Name == etbm.CategoryName)
+            if (topic.Category.Name != etbm.CategoryName)
             {
                 var category = Context.Categories.First(c => c.Name == etbm.CategoryName);
                 topic.Category = category;

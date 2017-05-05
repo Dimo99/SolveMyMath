@@ -8,19 +8,17 @@ using SolveMath.Services;
 using SolveMath.Services.Contracts;
 using PagedList;
 using PagedList.Mvc;
+using SolveMath.Models.Entities;
+
 namespace SolveMath.Areas.Forum.Controllers
 {
     public class ForumController : Controller
     {
         private IForumService service;
-
-        public ForumController()
-        {
-            service = new ForumService();
-        }
-
+        public Func<string> GetUserId;//For testing
         public ForumController(IForumService service)
         {
+            GetUserId = () => User.Identity.GetUserId();
             this.service = service;
         }
         [Authorize(Roles = "User")]
@@ -39,8 +37,10 @@ namespace SolveMath.Areas.Forum.Controllers
                 tbm.PublishDate = DateTime.Now;
 
                 service.CreateTopic(tbm);
+                return this.RedirectToAction("Index");
             }
-            return this.RedirectToAction("Index");
+            var model = service.GetCategoryNames();
+            return this.View(model);
         }
         [Authorize(Roles = "User")]
         public ActionResult AddAnswer(int id)
@@ -52,9 +52,13 @@ namespace SolveMath.Areas.Forum.Controllers
         [HttpPost]
         public ActionResult AddAnswer(AnswerBindingModel abm)
         {
-            string userId = User.Identity.GetUserId();
-            service.CreateAnswer(abm,userId);
-            return this.RedirectToAction("Topic",new {abm.Id});
+            if (ModelState.IsValid)
+            {
+                string userId = User.Identity.GetUserId();
+                service.CreateAnswer(abm, userId);
+                return this.RedirectToAction("Topic", new {id= abm.Id});
+            }
+            return this.View(new AddingAnswerViewModel {Id = abm.Id});
         }
         [Authorize(Roles = "User")]
         public ActionResult AddComment(int id,int topicId)
@@ -66,14 +70,25 @@ namespace SolveMath.Areas.Forum.Controllers
         [HttpPost]
         public ActionResult AddComment(AddForumCommentBindingModel acbm)
         {
-            service.CreateComment(acbm,User.Identity.GetUserId());
-            return this.RedirectToAction("Topic", new {id = acbm.TopicId});
+            if (ModelState.IsValid)
+            {
+                service.CreateComment(acbm, User.Identity.GetUserId());
+                return this.RedirectToAction("Topic", new {id = acbm.TopicId});
+            }
+            AddCommentViewModel acvm = new AddCommentViewModel() {Id = acbm.Id,TopicId = acbm.TopicId};
+            return this.View(acvm);
         }
         public ActionResult Topic(int id)
         {
             
             var model = service.GetTopic(id);
             return this.View(model);
+        }
+
+        public ActionResult TopicPartialView(int id)
+        {
+            var model = service.GetTopic(id);
+            return this.PartialView("_TopicPartialView", model);
         }
         // GET: Forum/Forum
         public ActionResult Index(int? page)
@@ -102,21 +117,21 @@ namespace SolveMath.Areas.Forum.Controllers
         [Authorize(Roles = "User")]
         public ActionResult UpVoteTopic(VoteBindingModel model)
         {
-            service.UpVoteTopic(model,User.Identity.GetUserId());
+            service.UpVoteTopic(model,GetUserId());
             return this.RedirectToAction("Index");
         }
         [HttpPost]
         [Authorize(Roles = "User")]
         public ActionResult DownVoteTopic(VoteBindingModel model)
         {
-            service.DownVoteTopic(model,User.Identity.GetUserId());
+            service.DownVoteTopic(model,GetUserId());
             return this.RedirectToAction("Index");
         }
         [HttpPost]
         [Authorize(Roles = "User")]
         public ActionResult UpVoteReply(VoteBindingModel model)
         {
-            service.UpVoteReply(model,User.Identity.GetUserId());
+            service.UpVoteReply(model,GetUserId());
             return this.RedirectToAction("Index");
         }
 
@@ -124,7 +139,7 @@ namespace SolveMath.Areas.Forum.Controllers
         [Authorize(Roles = "User")]
         public ActionResult DownVoteReply(VoteBindingModel model)
         {
-            service.DownVoteReply(model,User.Identity.GetUserId());
+            service.DownVoteReply(model,GetUserId());
             return this.RedirectToAction("Index");
         }
 
@@ -132,7 +147,7 @@ namespace SolveMath.Areas.Forum.Controllers
         [Authorize(Roles = "User")]
         public ActionResult UpVoteForumComment(VoteBindingModel model)
         {
-            service.UpVoteForumComment(model,User.Identity.GetUserId());
+            service.UpVoteForumComment(model,GetUserId());
             return this.RedirectToAction("Index");
         }
 
@@ -140,7 +155,7 @@ namespace SolveMath.Areas.Forum.Controllers
         [Authorize(Roles = "User")]
         public ActionResult DownVoteForumComment(VoteBindingModel model)
         {
-            service.DownVoteForumComment(model,User.Identity.GetUserId());
+            service.DownVoteForumComment(model,GetUserId());
             return this.RedirectToAction("Index");
         }
     }

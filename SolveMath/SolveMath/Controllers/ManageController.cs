@@ -23,13 +23,18 @@ namespace SolveMath.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private IManageService service;
-        public ManageController()
-        {
-            service = new ManageService();
-        }
+        public Func<string> GetUserId;
 
+        public ManageController(IManageService service)
+        {
+
+            GetUserId = () => User.Identity.GetUserId();
+            this.service = service;
+
+        }
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
+            GetUserId = () => User.Identity.GetUserId();
             UserManager = userManager;
             SignInManager = signInManager;
         }
@@ -336,17 +341,22 @@ namespace SolveMath.Controllers
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
-        [HandleError(ExceptionType = typeof(InvalidOperationException),View = "InvalidEditError")]
+        [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
         [HttpGet]
         [Authorize(Roles = "User")]
         public ActionResult DeleteTopic(int id)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.ValidateIsUserTopic(id, User.Identity.GetUserId()))
+            bool condition = User.IsInRole("Admin");
+            if (User.IsInRole("Moderator") || User.IsInRole("Admin") || service.ValidateIsUserTopic(id, GetUserId()))
+            {
+
+                DeleteTopicViewModel deleteTopicViewModel = service.DeleteTopicViewModel(id);
+                return this.View(deleteTopicViewModel);
+            }
+            else
             {
                 throw new InvalidOperationException(InvalidUserDeleteTopic);
             }
-            DeleteTopicViewModel deleteTopicViewModel = service.DeleteTopicViewModel(id);
-            return this.View(deleteTopicViewModel);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
@@ -354,12 +364,13 @@ namespace SolveMath.Controllers
         [Authorize(Roles = "User")]
         public ActionResult DeleteTopic(DeleteTopicBindingModel deleteTopicBindingModel)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.ValidateIsUserTopic(deleteTopicBindingModel.Id, User.Identity.GetUserId()))
+            if (User.IsInRole("Moderator") || User.IsInRole("Admin") || service.ValidateIsUserTopic(deleteTopicBindingModel.Id, GetUserId()))
             {
-                throw new InvalidOperationException(InvalidUserDeleteTopic);
+
+                service.DeleteTopic(deleteTopicBindingModel);
+                return this.RedirectToAction("Index", "Forum", new { area = "Forum" });
             }
-            service.DeleteTopic(deleteTopicBindingModel);
-            return this.RedirectToAction("Index", "Forum", new { area = "Forum" });
+            throw new InvalidOperationException(InvalidUserDeleteTopic);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
@@ -367,60 +378,67 @@ namespace SolveMath.Controllers
         [Authorize(Roles = "User")]
         public ActionResult DeleteForumComment(int id)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.IsUserForumComment(id, User.Identity.GetUserId()))
+            if (User.IsInRole("Moderator") || User.IsInRole("Admin") || service.IsUserForumComment(id, GetUserId()))
             {
-                throw new InvalidOperationException(InvalidUserDeleteForumComment);
+
+                DeleteForumCommentViewModel model = service.DeleteForumCommentViewModel(id);
+                return this.View(model);
             }
-            DeleteForumCommentViewModel model = service.DeleteForumCommentViewModel(id);
-            return this.View(model);
+
+            throw new InvalidOperationException(InvalidUserDeleteForumComment);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
         [HttpPost]
         public ActionResult DeleteForumComment(DeleteForumCommentBindingModel deleteForumCommentBindingModel)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.IsUserForumComment(deleteForumCommentBindingModel.Id, User.Identity.GetUserId()))
+            if (User.IsInRole("Moderator") || User.IsInRole("Admin") || service.IsUserForumComment(deleteForumCommentBindingModel.Id, GetUserId()))
             {
-                throw new InvalidOperationException(InvalidUserDeleteForumComment);
-            }
-            service.DeleteForumComment(deleteForumCommentBindingModel);
-            return this.RedirectToAction("Index", "Forum", new { area = "Forum" });
+                service.DeleteForumComment(deleteForumCommentBindingModel);
+                return this.RedirectToAction("Index", "Forum", new { area = "Forum" });
 
+            }
+            throw new InvalidOperationException(InvalidUserDeleteForumComment);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
         public ActionResult DeleteReply(int id)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.IsUserReply(id, User.Identity.GetUserId()))
+            if (User.IsInRole("Moderator") || User.IsInRole("Admin") || service.IsUserReply(id, GetUserId()))
             {
-                throw new InvalidOperationException(IvalidUserDeleteReply);
+                DeleteReplyViewModel model = service.DeleteReplyViewModel(id);
+                return this.View(model);
+
             }
-            DeleteReplyViewModel model = service.DeleteReplyViewModel(id);
-            return this.View(model);
+            throw new InvalidOperationException(IvalidUserDeleteReply);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
         [HttpPost]
         public ActionResult DeleteReply(DeleteReplyBindingModel bindingModel)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.IsUserReply(bindingModel.Id, User.Identity.GetUserId()))
+            if (User.IsInRole("Moderator") || User.IsInRole("Admin") || service.IsUserReply(bindingModel.Id, GetUserId()))
             {
-                throw new InvalidOperationException(IvalidUserDeleteReply);
+
+                service.DeleteReply(bindingModel);
+                return this.RedirectToAction("Index", "Forum", new { area = "Forum" });
             }
-            service.DeleteReply(bindingModel);
-            return this.RedirectToAction("Index", "Forum", new { area = "Forum" });
+
+            throw new InvalidOperationException(IvalidUserDeleteReply);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
         [Authorize(Roles = "User")]
         public ActionResult EditTopic(int id)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.ValidateIsUserTopic(id, User.Identity.GetUserId()))
+            if (User.IsInRole("Moderator") || User.IsInRole("Admin") || service.ValidateIsUserTopic(id, GetUserId()))
             {
-                throw new InvalidOperationException(InvalidUserEditTopic);
+
+                TopicEditViewModel tevm = service.Topic(id);
+                return this.View(tevm);
             }
-            TopicEditViewModel tevm = service.Topic(id);
-            return this.View(tevm);
+
+            throw new InvalidOperationException(InvalidUserEditTopic);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
@@ -428,12 +446,22 @@ namespace SolveMath.Controllers
         [HttpPost]
         public ActionResult EditTopic(EditTopicBindingModel etbm)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.ValidateIsUserTopic(etbm.Id, User.Identity.GetUserId()))
+            if (ModelState.IsValid)
             {
+                if (User.IsInRole("Moderator") || User.IsInRole("Admin") ||
+                    service.ValidateIsUserTopic(etbm.Id, GetUserId()))
+                {
+
+                    service.EditTopic(etbm);
+                    return RedirectToAction("Topic", "Forum", new {area = "Forum", etbm.Id});
+                }
                 throw new InvalidOperationException(InvalidUserEditTopic);
             }
-            service.EditTopic(etbm);
-            return RedirectToAction("Topic", "Forum", new { area = "Forum", etbm.Id });
+            else
+            {
+                TopicEditViewModel tevm = service.Topic(etbm.Id);
+                return this.View(tevm);
+            }
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
@@ -441,12 +469,14 @@ namespace SolveMath.Controllers
         [HttpGet]
         public ActionResult EditForumComment(int id)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.IsUserForumComment(id, User.Identity.GetUserId()))
+            if (User.IsInRole("Moderator") || User.IsInRole("Admin") || service.IsUserForumComment(id, GetUserId()))
             {
-                throw new InvalidOperationException(InvalidUserEditForumComment);
+
+                ForumCommentEditViewModel forumComment = service.ForumComment(id);
+                return this.View(forumComment);
             }
-            ForumCommentEditViewModel forumComment = service.ForumComment(id);
-            return this.View(forumComment);
+
+            throw new InvalidOperationException(InvalidUserEditForumComment);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
@@ -454,12 +484,20 @@ namespace SolveMath.Controllers
         [HttpPost]
         public ActionResult EditForumComment(EditForumCommentBindingModel editForumCommentBinding)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.IsUserForumComment(editForumCommentBinding.Id, User.Identity.GetUserId()))
+            if (ModelState.IsValid)
             {
+                if (User.IsInRole("Moderator") || User.IsInRole("Admin") ||
+                    service.IsUserForumComment(editForumCommentBinding.Id, GetUserId()))
+                {
+                    service.EditForumComment(editForumCommentBinding);
+                    return this.RedirectToAction("Topic", "Forum",
+                        new {area = "Forum", id = service.TopicIdFromForumComment(editForumCommentBinding.Id)});
+
+                }
                 throw new InvalidOperationException(InvalidUserEditForumComment);
             }
-            service.EditForumComment(editForumCommentBinding);
-            return this.RedirectToAction("Topic", "Forum", new { area = "Forum", id = service.TopicIdFromForumComment(editForumCommentBinding.Id) });
+            ForumCommentEditViewModel forumComment = service.ForumComment(editForumCommentBinding.Id);
+            return this.View(forumComment);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
@@ -467,12 +505,18 @@ namespace SolveMath.Controllers
         [HttpGet]
         public ActionResult EditReply(int id)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin") || !service.IsUserReply(id, User.Identity.GetUserId()))
+            if (ModelState.IsValid)
             {
-                throw new InvalidOperationException(InvalidUserEditReply);
+                if (User.IsInRole("Moderator") || User.IsInRole("Admin") || service.IsUserReply(id, GetUserId()))
+                {
+
+                    ReplyEditViewModel replyEditViewModel = service.Reply(id);
+                    return this.View(replyEditViewModel);
+                }
+
+                
             }
-            ReplyEditViewModel replyEditViewModel = service.Reply(id);
-            return this.View(replyEditViewModel);
+            throw new InvalidOperationException(InvalidUserEditReply);
         }
 
         [HandleError(ExceptionType = typeof(InvalidOperationException), View = "InvalidEditError")]
@@ -480,12 +524,20 @@ namespace SolveMath.Controllers
         [HttpPost]
         public ActionResult EditReply(EditReplyBindingModel editReplyBindingModel)
         {
-            if (!User.IsInRole("Moderator") || !User.IsInRole("Admin")||service.IsUserReply(editReplyBindingModel.Id, User.Identity.GetUserId()))
+            if (ModelState.IsValid)
             {
+                if (User.IsInRole("Moderator") || User.IsInRole("Admin") ||
+                    service.IsUserReply(editReplyBindingModel.Id, GetUserId()))
+                {
+                    service.EditReply(editReplyBindingModel);
+                    return this.RedirectToAction("Topic", "Forum",
+                        new {area = "Forum", id = service.TopicIdFromReply(editReplyBindingModel.Id)});
+                }
                 throw new InvalidOperationException(InvalidUserEditReply);
             }
-            service.EditReply(editReplyBindingModel);
-            return this.RedirectToAction("Topic", "Forum", new { area = "Forum", id = service.TopicIdFromReply(editReplyBindingModel.Id) });
+            ReplyEditViewModel replyEditViewModel = service.Reply(editReplyBindingModel.Id);
+            return this.View(replyEditViewModel);
+
         }
         protected override void Dispose(bool disposing)
         {

@@ -1,16 +1,4 @@
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\ApplicationInsights.config
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\csc.exe
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.dll
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\Microsoft.CSharp.Core.targets
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\Microsoft.VisualBasic.Core.targets
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\System.Collections.Immutable.dll
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\System.Reflection.Metadata.dll
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\vbc.exe
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\VBCSCompiler.exe
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\roslyn\VBCSCompiler.exe.config
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\SolveMath.Tests.dll.config
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\SolveMath.Tests.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\SolveMath.Tests.pdb
@@ -27,7 +15,6 @@ C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\System.Web.WebPages.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\System.Web.WebPages.Razor.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\TestStack.FluentMVCTesting.dll
-C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\EntityFramework.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Microsoft.AspNet.Identity.Core.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Microsoft.Owin.dll
@@ -76,3 +63,12 @@ C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\PagedList.Mvc.dll
 C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\PagedList.Mvc.xml
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Castle.Core.dll
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Moq.dll
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Castle.Core.xml
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Moq.xml
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\WebActivatorEx.dll
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Ninject.Web.Common.dll
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Ninject.dll
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Ninject.Web.Common.xml
+C:\Users\Dimo\Desktop\Projects For Softuni\SolveMyMath\SolveMath\SolveMath.Tests\bin\Debug\Ninject.xml

@@ -9,8 +9,21 @@
     <div class="col-lg-3">
         @Html.Action("Categories")
     </div>
-    <div class="col-lg-offset-2 col-lg-5">
+    <div id="cont" class="col-lg-offset-2 col-lg-5">
         @Html.Action("Topics", Model.Page)
 
     </div>
 </div>
+@section scripts
+{
+
+    <script>
+        function reload() {
+            setTimeout(function() {
+
+                    $("#cont").load("forum/forum/topics");
+                },
+                100);
+        };
+    </script>
+}

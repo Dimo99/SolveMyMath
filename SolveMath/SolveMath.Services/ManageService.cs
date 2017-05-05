@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using AutoMapper;
+using SolveMath.Data.Interfaces;
 using SolveMath.Models.BindingModels;
 using SolveMath.Models.Entities;
 using SolveMath.Models.ViewModels;
@@ -12,6 +13,16 @@ namespace SolveMath.Services
 {
     public class ManageService : Service, IManageService
     {
+        public ManageService() : base()
+        {
+
+        }
+
+        public ManageService(ISolveMathContext context) :
+            base(context)
+        {
+
+        }
         public bool ValidateIsUserTopic(int id, string userId)
         {
             var topicAuthorId = Context.Topics.Find(id).Author.Id;
@@ -22,13 +33,14 @@ namespace SolveMath.Services
         {
             var topic = Context.Topics.Find(id);
             var categoryNames = Context.Categories.Select(c => c.Name);
+            int Id = topic.Id;
             TopicEditViewModel topicEditViewModel = new TopicEditViewModel()
             {
-                Id = topic.Id,
-                CategoryName = topic.Category.Name,
+                Id = Id,
+                CategoryName = topic?.Category?.Name,
                 CategoryNames = categoryNames,
                 Content = topic.Content,
-                TagNames = topic.Tags.Select(t=>t.Name),
+                TagNames = topic?.Tags?.Select(t => t.Name),
                 Title = topic.Title
             };
             return topicEditViewModel;
@@ -39,7 +51,7 @@ namespace SolveMath.Services
 
             var topic = Context.Topics.Find(etbm.Id);
             topic.Content = etbm.Content;
-            topic.Title  = etbm.Title;
+            topic.Title = etbm.Title;
             if (topic.Category.Name == etbm.CategoryName)
             {
                 var category = Context.Categories.First(c => c.Name == etbm.CategoryName);
@@ -48,14 +60,14 @@ namespace SolveMath.Services
             List<Tag> tagsToDelete = new List<Tag>();
             if (etbm.OldTagNames == null)
             {
-                etbm.OldTagNames = new string[] {};
+                etbm.OldTagNames = new string[] { };
             }
             foreach (var topicTag in topic.Tags)
             {
                 if (!etbm.OldTagNames.Contains(topicTag.Name))
                 {
                     tagsToDelete.Add(topicTag);
-                }                
+                }
             }
             foreach (var tag in tagsToDelete)
             {
@@ -63,7 +75,7 @@ namespace SolveMath.Services
             }
             if (etbm.TagNames != null)
             {
-                string[] tagNames = etbm.TagNames.Split(new string[] {",", " ,"}, StringSplitOptions.RemoveEmptyEntries);
+                string[] tagNames = etbm.TagNames.Split(new string[] { ",", " ," }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var tagName in tagNames)
                 {
                     var tag = Context.Tags.FirstOrDefault(t => t.Name == tagName);
@@ -80,7 +92,7 @@ namespace SolveMath.Services
                     }
                 }
             }
-            
+
             Context.SaveChanges();
         }
 
@@ -159,7 +171,7 @@ namespace SolveMath.Services
             for (var i = 0; i < replies.Count; i++)
             {
                 topic.Replies.Remove(replies[i]);
-                this.DeleteReply(new DeleteReplyBindingModel() {Id = replies[i].Id});
+                this.DeleteReply(new DeleteReplyBindingModel() { Id = replies[i].Id });
             }
             Context.Topics.Remove(topic);
             Context.SaveChanges();
@@ -189,6 +201,7 @@ namespace SolveMath.Services
             for (var i = 0; i < forumComments.Count; i++)
             {
                 deleteReply.ForumComments.Remove(forumComments[i]);
+                this.DeleteForumComment(new DeleteForumCommentBindingModel() {Id= forumComments[i].Id});
             }
             Context.Replies.Remove(deleteReply);
             Context.SaveChanges();

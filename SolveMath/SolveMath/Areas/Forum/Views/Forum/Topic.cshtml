@@ -4,110 +4,20 @@
     <div class="col-lg-3">
         @Html.Action("Categories")
     </div>
-    <div class="col-lg-offset-2">
-        <article class="card card-block">
-            <p>@Model.Author.UserName</p>
-            <h2>@Model.Title</h2>
-            <p>@Model.Content</p>
-            <div>
-                <label>Тагове:</label>
-                @foreach (var tag in Model.Tags)
-                {
-                    <span>@tag.Name</span>
-                }
-            </div>
-            <br />
-            <div>
-                <div>
-                    <form action="UpVoteTopic" method="post">
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <button type="submit">
-                            <i class="glyphicon glyphicon-chevron-up"></i>
-                        </button>
-                    </form>
-                    <form action="DownVoteTopic" method="post">
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <button type="submit">
-                            <i class="glyphicon glyphicon-chevron-down"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-            <div>
-                <span>@Model.Score</span>
-                <span>@Model.PublishDate.ToLongDateString()</span>
-                <span><a href="/forum/forum/category/@Model.Category.Id">@Model.Category.Name</a></span>
-            </div>
-            <br />
-            @Html.ActionLink("Отговори", "AddAnswer", new { Model.Id }, new { @class = "btn btn-primary" })
-            @if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.Identity.Name == Model.Author.UserName)
-            {
-                @Html.ActionLink("Редактирай", "EditTopic", "Manage", new { area = "", id = Model.Id }, new { @class = "btn btn-default" })
-                @Html.ActionLink("Изтрий", "DeleteTopic", "Manage", new { area = "", id = Model.Id }, new { @class = "btn btn-danger" })
-            }
-        </article>
-        @foreach (var reply in Model.Replies)
-            {
-            <article class="card card-block">
-                <p>@reply.Author.UserName</p>
-                <p>@reply.Content</p>
-                <div>
-                    <form action="UpVoteReply" method="post">
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <button type="submit">
-                            <i class="glyphicon glyphicon-chevron-up"></i>
-                        </button>
-                    </form>
-                    <form action="DownVoteReply" method="post">
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        <button type="submit">
-                            <i class="glyphicon glyphicon-chevron-down"></i>
-                        </button>
-                    </form>
-                    <span>@reply.UpVotes-@reply.DownVotes</span>
-                    <span>@reply.PublishDate.Value.ToLongDateString()</span>
-                </div>
-                @Html.ActionLink("Коментирай", "AddComment", new { id = reply.Id, topicId = Model.Id }, new { @class = "btn btn-warning" })
-                @if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.Identity.Name == reply.Author.UserName)
-                {
-                    @Html.ActionLink("Редактирай", "EditReply", "Manage", new { area = "", id = reply.Id }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Изтрий", "DeleteReply", "Manage", new { area = "", id = reply.Id }, new { @class = "btn btn-danger" })
-                }
-            </article>
-            <article class="col-lg-offset-2 card card-block">
-                @if (reply.ForumComments.Any())
-                {
-                    foreach (var comment in reply.ForumComments)
-                    {
-                        <p>@comment.Author.UserName</p>
-                        <p>@comment.Content</p>
-                        <div>
-                            <form action="UpVoteForumComment" method="post">
-                                <input type="hidden" name="id" value="@Model.Id" />
-                                <button type="submit">
-                                    <i class="glyphicon glyphicon-chevron-up"></i>
-                                </button>
-                            </form>
-                            <form action="DownVoteForumComment" method="post">
-                                <input type="hidden" name="id" value="@Model.Id" />
-                                <button type="submit">
-                                    <i class="glyphicon glyphicon-chevron-down"></i>
-                                </button>
-                            </form>
-                        </div>
-                            <div>
-                                <span>@comment.UpVotes-@comment.DownVotes</span>
-                                <span>@comment.PublishDate.Value.ToString("dd/M/yyyy-hh:mm:ss")</span>
-                            </div>
-                            @Html.ActionLink("Коментирай", "AddComment", new { id = reply.Id, topicId = Model.Id }, new { @class = "btn btn-warning" })
-                        if (User.IsInRole("Admin") || User.Identity.Name == comment.Author.UserName || User.IsInRole("Moderator"))
-                        {
-                            @Html.ActionLink("Редактирай", "EditForumComment", "Manage", new { area = "", id = comment.Id }, new { @class = "btn btn-default" })
-                            @Html.ActionLink("Изтрий", "DeleteForumComment", "Manage", new { area = "", id = comment.Id }, new { @class = "btn btn-danger" })
-                        }
-                    }
-                }
-            </article>
-        }
+    <div id="cont" class="col-lg-offset-2">
+        @Html.Action("TopicPartialView",Model.Id);
     </div>
 </div>
+@section scripts
+{
+
+    <script>
+        function reload() {
+            setTimeout(function() {
+
+                    $("#cont").load("/forum/forum/topicpartialview/@Model.Id");
+                },
+                100);
+        };
+    </script>
+}

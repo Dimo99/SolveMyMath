@@ -23,6 +23,7 @@ namespace SolveMath.Models.Entities
             return userIdentity;
         }
 
+        //public override string Email { get; set; }
         public virtual ICollection<Topic> Topics { get; set; }
         public virtual ICollection<Reply> Replies { get; set; }
         public virtual ICollection<ForumComment> ForumComments { get; set; }

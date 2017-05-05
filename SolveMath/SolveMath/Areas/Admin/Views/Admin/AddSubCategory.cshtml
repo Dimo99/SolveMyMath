@@ -5,11 +5,12 @@
 
 <h2>Създаване на подкатегория на @Model.CategoryName</h2>
 <form method="post">
-    <input type="hidden" name="id" value="@Model.CategoryId" />
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <input type="hidden" name="id" value="@Model.CategoryId"/>
     <div class="form-group">
         <label class="control-label" for="form-group-input">Име:</label>
         <input type="text" class="form-control" name="Name" id="form-group-input" placeholder="Име">
     </div>
-    <input type="submit" value="Създай" class="btn btn-success" />
+    <input type="submit" value="Създай" class="btn btn-success"/>
 </form>
 

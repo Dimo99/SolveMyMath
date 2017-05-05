@@ -1,15 +1,17 @@
-﻿
+﻿@model SolveMath.Models.ViewModels.ReplyEditViewModel
 @{
     ViewBag.Title = "Редактиране";
 }
 
 <h2>Редактиране</h2>
-<form method="post">
-    <input type="hidden" value="@Model.Id" name="id" />
+@using (Html.BeginForm("EditReply", "Manage"))
+{
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <input type="hidden" value="@Model.Id" name="id"/>
     <div class="form-group">
         <label class="control-label" for="form-group-input">Съдържание</label>
-        <textarea type="text" class="form-control" id="form-group-input" name="Content" >@Model.Content</textarea>
+        <textarea class="form-control" id="form-group-input" name="Content">@Model.Content</textarea>
     </div>
-    <input class="btn btn-primary" type="submit" value="Изпрати" />
-</form>
+    <input class="btn btn-primary" type="submit" value="Изпрати"/>
+}
 

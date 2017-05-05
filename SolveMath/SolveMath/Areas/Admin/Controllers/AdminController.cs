@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using Ninject;
 using SolveMath.Models.BindingModels;
 using SolveMath.Models.ViewModels;
 using SolveMath.Services;
@@ -12,10 +13,12 @@ namespace SolveMath.Areas.Admin.Controllers
     {
         private IForumService forumService;
         private IAdminService service;
-        public AdminController()
+        
+
+        public AdminController(IAdminService service)
         {
-            forumService = new ForumService();
-            service = new AdminService();
+            this.service = service;
+            this.forumService = new ForumService();
         }
         // GET: Admin/Admin
         public ActionResult Index()
@@ -27,13 +30,16 @@ namespace SolveMath.Areas.Admin.Controllers
         {
             return this.View();
         }
-
         
         [HttpPost]
         public ActionResult NewCategory(CategoryBindingModel categoryBindingModel)
         {
-            service.CreateCategory(categoryBindingModel);
-            return this.RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                service.CreateCategory(categoryBindingModel);
+                return this.RedirectToAction("Index");
+            }
+            return this.View();
         }
         public ActionResult AddSubCategory(int id)
         {
@@ -44,8 +50,13 @@ namespace SolveMath.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult AddSubCategory(SubCategoryBindingModel subCategoryBindingModel)
         {
-            service.CreateSubCategory(subCategoryBindingModel);
-            return this.RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                service.CreateSubCategory(subCategoryBindingModel);
+                return this.RedirectToAction("Index");
+            }
+            SubCategoryViewModel subCategoryViewModel = service.SubCategory(subCategoryBindingModel.Id);
+            return this.View(subCategoryViewModel);
         }
         public ActionResult EditCategory(int id)
         {
@@ -56,8 +67,13 @@ namespace SolveMath.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult EditCategory(EditCategoryBindingModel editCategoryBindingModel)
         {
-            service.EditCategory(editCategoryBindingModel);
-            return this.RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                service.EditCategory(editCategoryBindingModel);
+                return this.RedirectToAction("Index");
+            }
+            EditCategoryViewModel editCategoryViewModel = service.GetCategory(editCategoryBindingModel.Id);
+            return this.View(editCategoryViewModel);
         }
         public ActionResult DeleteCategory(int id)
         {
@@ -68,8 +84,12 @@ namespace SolveMath.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult DeleteCategory(DeleteCategoryBindingModel deleteCategoryBindingModel)
         {
-            service.DeleteCategory(deleteCategoryBindingModel);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                service.DeleteCategory(deleteCategoryBindingModel);
+                return RedirectToAction("Index");
+            }
+            return this.View();
         }
         public ActionResult Categories()
         {

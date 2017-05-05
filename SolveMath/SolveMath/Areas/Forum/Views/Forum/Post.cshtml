@@ -5,6 +5,7 @@
 
 <h2>Създаване на тема</h2>
 <form method="post">
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     <div class="form-group">
         <label class="control-label" for="form-group-input">Заглавие</label>
         <input type="text" class="form-control" id="form-group-input" placeholder="Заглавие" name="Title">
@@ -28,6 +29,6 @@
         <input type="text" class="form-control" id="form-group-input2" placeholder="Изберете тагове..." name="tagsnames">
     </div>
     <div class="form-group">
-        <input class="btn btn-success" type="submit" value="Създай" />
+        <input class="btn btn-success" type="submit" value="Създай"/>
     </div>
 </form>

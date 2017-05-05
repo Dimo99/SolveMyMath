@@ -113,6 +113,7 @@
     <Compile Include="BindingModels\EditForumCommentBindingModel.cs" />
     <Compile Include="BindingModels\EditReplyBindingModel.cs" />
     <Compile Include="BindingModels\EditTopicBindingModel.cs" />
+    <Compile Include="BindingModels\ProblemBindingModel.cs" />
     <Compile Include="BindingModels\SubCategoryBindingModel.cs" />
     <Compile Include="BindingModels\TopicBindingModel.cs" />
     <Compile Include="BindingModels\VoteBindingModel.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\SendCodeViewModel.cs" />
     <Compile Include="ViewModels\SetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\SolutionViewModel.cs" />
     <Compile Include="ViewModels\SubCategoryViewModel.cs" />
     <Compile Include="ViewModels\TopicEditViewModel.cs" />
     <Compile Include="ViewModels\TopicHeaderViewModel.cs" />

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace SolveMath.Data.Mocks
 {
-    public class FakeDbSet<T> : DbSet<T>,IQueryable,IEnumerable<T> where T : class
+    public class FakeDbSet<T> : DbSet<T>, IQueryable, IEnumerable<T> where T : class
     {
         protected HashSet<T> Set;
         protected IQueryable Query;
@@ -21,12 +22,22 @@ namespace SolveMath.Data.Mocks
             return entity;
         }
 
+        public override T Find(params object[] keyValues)
+        {
+            if (keyValues[0] is int)
+            {
+                int id = (int)keyValues[0];
+                return this.Set.First(x => x.GetType().GetProperty("Id").GetValue(x).Equals(id));
+            }
+            string idString = (string)keyValues[0];
+            return this.Set.First(x => x.GetType().GetProperty("Id").GetValue(x).Equals(idString));
+        }
+
         public override T Remove(T entity)
         {
             this.Set.Remove(entity);
             return entity;
         }
-
         System.Linq.Expressions.Expression IQueryable.Expression
         {
             get { return this.Query.Expression; }

@@ -5,9 +5,10 @@
 
 <h2>Нова категория</h2>
 <form method="post">
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     <div class="form-group">
         <label class="control-label" for="form-group-input">Име:</label>
         <input type="text" class="form-control" id="form-group-input" name="Name" placeholder="Име...">
     </div>
-    <input type="submit" value="Създай категория" class="btn btn-success" />
+    <input type="submit" value="Създай категория" class="btn btn-success"/>
 </form>

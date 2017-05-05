@@ -73,24 +73,27 @@ namespace SolveMath.Services
             Context.Topics.Add(topic);
             ApplicationUser user = Context.Users.Find(tbm.AuthorId);
             Category category = Context.Categories.First(c => c.Name == tbm.CategoryName);
-            string[] tagsNames = tbm.TagsNames.Split(new string[] { ",", " ," }, StringSplitOptions.None);
-            List<Tag> tags = new List<Tag>();
-            foreach (var tagName in tagsNames)
+            if (tbm.TagsNames != null)
             {
-                if (Context.Tags.Any(x => x.Name == tagName))
+                string[] tagsNames = tbm.TagsNames.Split(new string[] {",", " ,"}, StringSplitOptions.None);
+                List<Tag> tags = new List<Tag>();
+                foreach (var tagName in tagsNames)
                 {
-                    tags.Add(Context.Tags.First(x => x.Name == tagName));
+                    if (Context.Tags.Any(x => x.Name == tagName))
+                    {
+                        tags.Add(Context.Tags.First(x => x.Name == tagName));
+                    }
+                    else
+                    {
+                        Tag tag = new Tag() {Name = tagName, Topics = new List<Topic>() {topic}};
+                        Context.Tags.Add(tag);
+                        tags.Add(tag);
+                    }
                 }
-                else
-                {
-                    Tag tag = new Tag() { Name = tagName, Topics = new List<Topic>() { topic } };
-                    Context.Tags.Add(tag);
-                    tags.Add(tag);
-                }
+                topic.Tags = tags;
             }
             topic.Author = user;
             topic.Category = category;
-            topic.Tags = tags;
             Context.SaveChanges();
         }
 
@@ -99,14 +102,14 @@ namespace SolveMath.Services
             var topic = Context.Topics.Find(id);
             var topicViewModel = new TopicViewModel()
             {
-                Author = topic.Author,
-                Category = topic.Category,
-                Content = topic.Content,
+                Author = topic?.Author,
+                Category = topic?.Category,
+                Content = topic?.Content,
                 PublishDate = topic.PublishDate.Value,
-                Replies = topic.Replies,
+                Replies = topic?.Replies,
                 Score = topic.UpVotes - topic.DownVotes,
-                Title = topic.Title,
-                Tags = topic.Tags,
+                Title = topic?.Title,
+                Tags = topic?.Tags,
                 Id = topic.Id
             };
             return topicViewModel;

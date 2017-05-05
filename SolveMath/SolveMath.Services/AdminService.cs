@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using SolveMath.Data.Interfaces;
 using SolveMath.Models.BindingModels;
 using SolveMath.Models.Entities;
 using SolveMath.Models.ViewModels;
@@ -7,8 +8,17 @@ using SolveMath.Services.Contracts;
 
 namespace SolveMath.Services
 {
-    public class AdminService : Service,IAdminService
+    public class AdminService : Service, IAdminService
     {
+        public AdminService() : base()
+        {
+
+        }
+
+        public AdminService(ISolveMathContext context) : base(context)
+        {
+
+        }
         public void CreateCategory(CategoryBindingModel categoryBindingModel)
         {
             var category = Mapper.Map<Category>(categoryBindingModel);
@@ -45,7 +55,7 @@ namespace SolveMath.Services
 
         public void CreateSubCategory(SubCategoryBindingModel subCategoryBindingModel)
         {
-            var subCategory = new Category() {Name = subCategoryBindingModel.Name};
+            var subCategory = new Category() { Name = subCategoryBindingModel.Name };
             var parrantCategory = Context.Categories.Find(subCategoryBindingModel.Id);
             parrantCategory.SubCategories.Add(subCategory);
             Context.SaveChanges();

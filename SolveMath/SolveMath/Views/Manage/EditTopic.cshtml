@@ -4,43 +4,52 @@
 }
 
 <h2>Редактиране</h2>
-<form method="post">
-    <input type="hidden" value="@Model.Id" name="id" />
-    <div class="form-group">
+<div class="container">
+    @using (Html.BeginForm("EditTopic", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.ValidationSummary(false,"", new { @class = "text-danger" })
+        <input type="hidden" value="@Model.Id" name="id" />
         <div class="form-group">
-            <label class="control-label" for="form-group-input1">Заглавие:</label>
-            <input type="text" class="form-control" id="form-group-input1" name="title" value="@Model.Title">
-        </div>
-        <label class="control-label" for="form-group-input">Съдържание</label>
-        <textarea type="text" rows="10" class="form-control" id="form-group-input" name="Content">@Model.Content</textarea>
-    </div>
-    <div class="form-group">
-        <label class="control-label" for="form-group-select">Избери категория</label>
-        <select class="form-control" id="form-group-select" name="CategoryName">
-            <option selected="selected">@Model.CategoryName</option>
-            @foreach (var model in Model.CategoryNames)
-            {
-                string name = model;
-                <option>@name</option>
-            }
-        </select>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            @foreach (var tag in Model.TagNames)
-            {
-                <div class="checkbox">
-                    <label>
-                        <input name="oldTagNames[]" type="checkbox" value="@tag" checked="checked"> @tag
-                    </label>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Title, new { @class = "col-lg-2 contol-label" })
+                @Html.TextBoxFor(m => m.Title, new { @class = "col-lg-10 form-control" })
+            </div>
+            <br />
+            <div class="form-group">
+                @Html.LabelFor(m => m.Content, new { @class = "col-lg-2 control-label" })
+                @Html.TextBoxFor(m => m.Content, new { @class = "col-lg-10 form-control" })
 
-                </div>
-            }
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label" for="form-group-input2">Добави тагове:</label>
-        <input type="text" class="form-control" id="form-group-input2" name="tagnames" placeholder="Добави тагове:">
-    </div>
-    <input type="submit" class="btn btn-primary" value="Редактирай" />
-</form>
+        <div class="form-group">
+            <label class="control-label" for="form-group-select">Избери категория</label>
+            <select class="form-control" id="form-group-select" name="CategoryName">
+                <option selected="selected">@Model.CategoryName</option>
+                @foreach (var model in Model.CategoryNames)
+                {
+                    string name = model;
+                    <option>@name</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                @foreach (var tag in Model.TagNames)
+                {
+                    <div class="checkbox">
+                        <label>
+                            <input name="oldTagNames[]" type="checkbox" value="@tag" checked="checked"> @tag
+                        </label>
+
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="form-group-input2">Добави тагове:</label>
+            <input type="text" class="form-control" id="form-group-input2" name="tagnames" placeholder="Добави тагове:">
+        </div>
+        <input type="submit" class="btn btn-primary" value="Редактирай" />
+
+    }
+</div>

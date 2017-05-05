@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Configuration;
-using System.Web.Http;
 using AutoMapper;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PagedList;
 using SolveMath.Areas.Forum.Controllers;
 using SolveMath.Data.Interfaces;
 using SolveMath.Data.Mocks;
+using SolveMath.Models.BindingModels;
 using SolveMath.Models.Entities;
 using SolveMath.Models.ViewModels;
 using SolveMath.Services;
 using SolveMath.Services.Contracts;
 using TestStack.FluentMVCTesting;
-
 namespace SolveMath.Tests.Controllers
 {
     [TestClass]
@@ -27,19 +26,32 @@ namespace SolveMath.Tests.Controllers
         private List<Topic> topics;
         private List<Reply> replies;
         private List<ForumComment> forumComments;
-
+        private List<ApplicationUser> users;
+        private List<IdentityRole> roles;
         private void ConfigureMapper()
         {
             Mapper.Initialize(expression =>
             {
                 expression.CreateMap<Topic, TopicHeaderViewModel>().ForMember(vm => vm.Score, configurationExpression =>
                         configurationExpression.MapFrom(topic => (topic.UpVotes - topic.DownVotes)));
+                expression.CreateMap<Category, CategoryNavbarViewModel>();
+                expression.CreateMap<Category, CategoryViewModel>();
             });
         }
         [TestInitialize]
         public void Init()
         {
             this.ConfigureMapper();
+            users = new List<ApplicationUser>()
+            {
+                new ApplicationUser()
+                {
+                    Id = "123",
+                    Email = "dimodimov1999@gmail.com",
+                    UserName = "dimodimov1999@gmail.com",
+                    
+                }
+            };
             categories = new List<Category>()
             {
                 new Category()
@@ -135,10 +147,14 @@ namespace SolveMath.Tests.Controllers
             {
                 _context.ForumComments.Add(forumComment);
             }
+            foreach (var applicationUser in users)
+            {
+                _context.Users.Add(applicationUser);
+            }
             this._service = new ForumService(this._context);
             this._forumController = new ForumController(_service);
         }
-        
+
         [TestMethod]
         public void Index_ReturnsDefaultView()
         {
@@ -151,16 +167,16 @@ namespace SolveMath.Tests.Controllers
         {
             _forumController.WithCallTo(forrumController => forrumController.Index(null))
                 .ShouldRenderDefaultView()
-                .WithModel<ForumIndexViewModel>(m=>Assert.AreEqual(null,m.Page));
+                .WithModel<ForumIndexViewModel>(m => Assert.AreEqual(null, m.Page));
             _forumController.WithCallTo(forrumController => forrumController.Index(1))
                 .ShouldRenderDefaultView()
-                .WithModel<ForumIndexViewModel>(m=>Assert.AreEqual(1,m.Page));
+                .WithModel<ForumIndexViewModel>(m => Assert.AreEqual(1, m.Page));
             _forumController.WithCallTo(forrumController => forrumController.Index(2))
                 .ShouldRenderDefaultView()
-                .WithModel<ForumIndexViewModel>(m=>Assert.AreEqual(2,m.Page));
+                .WithModel<ForumIndexViewModel>(m => Assert.AreEqual(2, m.Page));
         }
         [TestMethod]
-        public void Topic_ReturnsDefaultPartialView()
+        public void Topic_ReturnsCorrectPartialView()
         {
             _forumController.WithCallTo(forumController =>
                 forumController.Topics(null, null)).ShouldRenderPartialView("_Topics");
@@ -178,8 +194,198 @@ namespace SolveMath.Tests.Controllers
         {
             IPagedList<TopicHeaderViewModel> expectedModel = _service.GetTopics(null).ToPagedList(1, 10);
             _forumController.WithCallTo(forumController =>
-                forumController.Topics(null, null)).ShouldRenderPartialView("_Topics").WithModel<IPagedList<TopicHeaderViewModel>>(m=>Assert.AreEqual(expectedModel.Count,m.Count));
+                forumController.Topics(null, null)).ShouldRenderPartialView("_Topics").WithModel<IPagedList<TopicHeaderViewModel>>(m => Assert.AreEqual(expectedModel.Count, m.Count));
         }
 
+        [TestMethod]
+        public void Categories_ReturnsCorrectPartialView()
+        {
+            _forumController.WithCallTo(forumController => forumController.Categories())
+                .ShouldRenderPartialView("_Categories");
+        }
+
+        [TestMethod]
+        public void Categories_ReturnsCorrectViewModel()
+        {
+            IEnumerable<CategoryNavbarViewModel> exprectedModel = _service.GetCategories();
+            _forumController.WithCallTo(forumController => forumController.Categories())
+                .ShouldRenderPartialView("_Categories")
+                .WithModel<IEnumerable<CategoryNavbarViewModel>>(m => Assert.AreEqual(exprectedModel.Count(), m.Count()));
+            _forumController.WithCallTo(forumController => forumController.Categories())
+                .ShouldRenderPartialView("_Categories")
+                .WithModel<IEnumerable<CategoryNavbarViewModel>>(m => Assert.AreEqual(exprectedModel.First().Name, m.First().Name));
+            _forumController.WithCallTo(forumController => forumController.Categories())
+                .ShouldRenderPartialView("_Categories")
+                .WithModel<IEnumerable<CategoryNavbarViewModel>>(m => Assert.AreEqual(exprectedModel.Last().Name, m.Last().Name));
+        }
+
+        [TestMethod]
+        public void Category_ReturnsCorrectView()
+        {
+            _forumController.WithCallTo(forumController =>
+                forumController.Category(0, null)).ShouldRenderDefaultView();
+        }
+
+        [TestMethod]
+        public void Category_ReturnsCorrectViewModel()
+        {
+            CategoryViewModel expectedModel = _service.GetCategoryViewModel(0);
+            _forumController.WithCallTo(forumController =>
+                forumController.Category(0, null))
+                .ShouldRenderDefaultView()
+                .WithModel<CategoryViewModel>(m =>
+                Assert.AreEqual(expectedModel.Name, m.Name));
+            expectedModel = _service.GetCategoryViewModel(1);
+            _forumController.WithCallTo(forumContrller =>
+                    forumContrller.Category(1, null))
+                .ShouldRenderDefaultView()
+                .WithModel<CategoryViewModel>(m => Assert.AreEqual(expectedModel.Id, m.Id));
+        }
+
+        [TestMethod]
+        public void UpVoteTopic_WorksAsExpected()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Score;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.UpVoteTopic(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Score;
+            Assert.AreEqual(after-before,1);
+        }
+        [TestMethod]
+        public void UpVoteTopic_UpVoteTopicTwiceNotChangeVotes()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Score;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.UpVoteTopic(model)).ShouldRedirectToRoute("");
+            _forumController.WithCallTo(forumController =>
+                forumController.UpVoteTopic(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Score;
+            Assert.AreEqual(after - before, 0);
+        }
+        [TestMethod]
+        public void DownVoteTopic_WorksAsExpected()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Score;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.DownVoteTopic(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Score;
+            Assert.AreEqual(before-after,1);
+        }
+        [TestMethod]
+        public void DownVoteTopic_DownVoteTopicTwiceNotChangeVotes()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Score;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.DownVoteTopic(model)).ShouldRedirectToRoute("");
+            _forumController.WithCallTo(forumController =>
+                forumController.DownVoteTopic(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Score;
+            Assert.AreEqual(before - after,0);
+        }
+        [TestMethod]
+        public void UpVoteReply_WorksAsExpected()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Replies.First().UpVotes;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.UpVoteReply(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Replies.First().UpVotes;
+            Assert.AreEqual(after-before, 1);
+        }
+        [TestMethod]
+        public void UpVoteReply_UpVoteReplyTwiceNotChangeVotes()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Replies.First().UpVotes;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.UpVoteReply(model)).ShouldRedirectToRoute("");
+            _forumController.WithCallTo(forumController =>
+                forumController.UpVoteReply(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Replies.First().UpVotes;
+            Assert.AreEqual(after - before, 0);
+        }
+        [TestMethod]
+        public void DownVoteReply_WorksAsExpected()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Replies.First().DownVotes;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.DownVoteReply(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Replies.First().DownVotes;
+            Assert.AreEqual(after - before, 1);
+        }
+        [TestMethod]
+        public void DownVoteReply_DownVoteReplyTwiceNotChangeVotes()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Replies.First().DownVotes;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.DownVoteReply(model)).ShouldRedirectToRoute("");
+            _forumController.WithCallTo(forumController =>
+                forumController.DownVoteReply(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Replies.First().DownVotes;
+            Assert.AreEqual(after - before, 0);
+        }
+
+        [TestMethod]
+        public void UpVoteForumComment_WorksAsExpected()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Replies.First().ForumComments.First().UpVotes;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.UpVoteForumComment(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Replies.First().ForumComments.First().UpVotes;
+            Assert.AreEqual(after - before, 1);
+        }
+        [TestMethod]
+        public void UpVoteForumComment_UpVoteForumCommentTwiceNotChangeVotes()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Replies.First().ForumComments.First().UpVotes;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.UpVoteForumComment(model)).ShouldRedirectToRoute("");
+            _forumController.WithCallTo(forumController =>
+                forumController.UpVoteForumComment(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Replies.First().ForumComments.First().UpVotes;
+            Assert.AreEqual(after - before, 0);
+        }
+        [TestMethod]
+        public void DownVoteForumComment_WorksAsExpected()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Replies.First().ForumComments.First().DownVotes;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.DownVoteForumComment(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Replies.First().ForumComments.First().DownVotes;
+            Assert.AreEqual(after - before, 1);
+        }
+        [TestMethod]
+        public void DownVoteForumComment_DownVoteForumCommentTwiceNotChangeVotes()
+        {
+            _forumController.GetUserId = () => "123";
+            var before = _service.GetTopic(0).Replies.First().ForumComments.First().DownVotes;
+            VoteBindingModel model = new VoteBindingModel() { Id = 0 };
+            _forumController.WithCallTo(forumController =>
+                forumController.DownVoteForumComment(model)).ShouldRedirectToRoute("");
+            _forumController.WithCallTo(forumController =>
+                forumController.DownVoteForumComment(model)).ShouldRedirectToRoute("");
+            var after = _service.GetTopic(0).Replies.First().ForumComments.First().DownVotes;
+            Assert.AreEqual(after - before, 0);
+        }
     }
 }

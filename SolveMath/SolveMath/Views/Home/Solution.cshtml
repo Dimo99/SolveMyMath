@@ -1,0 +1,11 @@
+﻿@model List<string>
+@{
+    int counter = 1;
+    ViewBag.Title = "Решение";
+}
+
+<h2>Решение</h2>
+@foreach (var step in Model)
+{
+    <p>@step</p>
+}

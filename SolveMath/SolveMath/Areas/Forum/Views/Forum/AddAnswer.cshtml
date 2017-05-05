@@ -7,7 +7,8 @@
 <h2>Добави отговор</h2>
 
 <form method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <input type="hidden" name="id" value="@Model.Id"/>
     <div class="form-group">
         <label class="control-label" for="form-group-input">Отговор</label>
         <input type="text" class="form-control" id="form-group-input" name="Content" placeholder="Отговор...">
